@@ -2,15 +2,31 @@
 #
 # Cron services.
 #
-# Written by Vladik Goytin.
 
 cron_start()
 {
-
 	if [ ${NORMALBOOT} -eq 1 ]; then 
-		ntpd -qdn -p pool.ntp.org
+		logger "ntpd -qdn -p pool.ntp.org"
+		[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p pool.ntp.org`
+		logger "ntpd -qdn -p de.pool.ntp.org"
 		[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p de.pool.ntp.org`
+		logger "ntpd -qdn -p at.pool.ntp.org"
+		[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p at.pool.ntp.org`
+		logger "ntpd -qdn -p europe.pool.ntp.org"
+		[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p europe.pool.ntp.org`
+		logger "ntpd -qdn -p pool.ntp.org"
+		[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p pool.ntp.org` 
+		logger "ntpd -qdn -p de.pool.ntp.org"
+		[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p de.pool.ntp.org`
+		logger "ntpd -qdn -p us.pool.ntp.org"
 		[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p us.pool.ntp.org`
+		logger "ntpd -qdn -p at.pool.ntp.org"
+		[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p  at.pool.ntp.org `
+		logger "ntpd -qdn -p europe.pool.ntp.org"
+		[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p europe.pool.ntp.org`
+		logger "ntpd -qdn -p us.pool.ntp.org"
+		[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p us.pool.ntp.org`
+		logger "Done ntpd"
 	fi
 
 	/usr/sbin/crond
@@ -42,7 +58,12 @@ set_normal_boot
 
 case "$1" in
 start)
+	logger "S47"
+	echo 9 > /tmp/blink_led
+	sync
 	cron_start
+	logger "S47 done"
+	sync
 	;;
 stop)
 	cron_stop

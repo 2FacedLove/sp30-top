@@ -1,0 +1,66 @@
+#!/bin/sh
+
+
+
+blink_thread(){
+	while true; do
+		usleep 700000
+		if [ -e "/tmp/blink_led" ]; then
+			times=`cat /tmp/blink_led`
+			i=0
+			while [  $i -lt $times ]; do
+				echo 1 >> /sys/class/gpio/gpio22/value
+				usleep 100000
+				echo 0 >> /sys/class/gpio/gpio22/value
+				usleep 250000
+				let i=i+1 
+			done    
+		fi
+	done
+}
+
+blink_start()
+{
+	led_status
+	start_state=$?
+	state=$start_state
+	date > $blink_file
+	blink
+}
+
+blink_stop(){
+	rm $blink_file
+}
+
+led_on(){
+	led_set 1
+}
+
+led_off(){
+	led_set 0
+}
+
+led_set()
+{
+	echo $1 >> /sys/class/gpio/gpio22/value
+}
+
+led_status()
+{
+	return `cat /sys/class/gpio/gpio22/value`
+}
+
+main()
+{
+case "$1" in
+	stop) blink_stop;;
+	on) led_on;;
+	off) led_off;;
+	*) blink_start;;
+esac
+	
+}
+
+main $1
+return $?
+

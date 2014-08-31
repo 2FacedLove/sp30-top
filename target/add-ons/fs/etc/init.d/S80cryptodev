@@ -12,7 +12,12 @@ cryptodev_start()
 
 case "$1" in
 start)
+	logger "S80"
+	echo 12 > /tmp/blink_led
+	sync
 	cryptodev_start
+	logger "S80 done"
+	sync
 	;;
 stop)
 	;;

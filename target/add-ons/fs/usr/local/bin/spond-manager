@@ -13,11 +13,14 @@ export PATH=$PATH:/usr/local/bin:
 case "$1" in
 start)
 	echo 1 > ${MINING_STATUS}
+	echo "spond-manager start" >> /tmp/mg_event_log
+	echo "spond-manager" > /var/run/dont_reboot
 	#${DAEMON} stop
 	#${DAEMON} active &
 	;;
 stop)
 	echo 0 > ${MINING_STATUS}
+	echo "spond-manager stop" >> /tmp/mg_event_log
 	#/usr/local/bin/spond-runner stop
 	#${DAEMON} stop
 	#${DAEMON} passive &

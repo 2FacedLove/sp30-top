@@ -6,14 +6,25 @@
 case "$1" in
   start)
 	// Stop old deamon
+	echo 5 > /tmp/blink_led
+	logger "S18 start"
+	sync
 	start-stop-daemon -K -q -p /var/run/syslogd.pid
 
 	if [ ! -d "/mnt/config/log" ]; then
 		mkdir /mnt/config/log
 	fi
 	echo -n "Starting logging: "
-	start-stop-daemon -S -q -p /var/run/syslogd.pid --exec /sbin/syslogd -- -m 0 -O /mnt/config/log/messages -b 20 -s 500
+	cat /var/log/messages >> /mnt/config/log/messages
+	echo "Moving to NVM logging" >> /mnt/config/log/messages
+	sync
+	start-stop-daemon -S -q -p /var/run/syslogd.pid --exec /sbin/syslogd -- -m 0 -O /mnt/config/log/messages -b 80 -s 500	
+	#cp /mnt/config/log/boot-messages-last /mnt/config/log/boot-messages-last-last
+	#cp /mnt/config/log/boot-messages /mnt/config/log/boot-messages-last
+	#cp /var/log/messages /mnt/config/log/boot-messages
 	echo "OK"
+	logger "S18 done"
+	sync
 	;;
   stop)
 	echo -n "Stopping logging: "

@@ -68,10 +68,15 @@ led_init()
 
 case "$1" in
 start)
+	logger "S13"
+	echo 4 > /tmp/blink_led
+	sync
 	reset_i2c
 	fans_off	
 	misc_start
 	led_init
+	logger "S13 done"
+	sync
 	;;
 stop)
 	;;

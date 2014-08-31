@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $# -lt 2 ] ; 
-    then echo "$0 <uImage_path> <miner-IP> [-check]"
+    then echo "$0 <uboot> <miner-IP> [-check]"
     exit 1
 fi
 IMAGE=$1
@@ -15,18 +15,6 @@ if [ ! -e $IMAGE ] ;
 fi
 echo file $IMAGE exist
 
-mkimage -l $IMAGE | grep SP30_FW  > /dev/null 2>&1
-if [ ! $? -eq 0 ] ; 
-	then mkimage -l $IMAGE | grep Linux-3.8.13  > /dev/null 2>&1
-	if [ ! $? -eq 0 ] ; 
-		then echo "\n $IMAGE doesnt seem a valid image file. Aborting!"
-		exit 3
-	fi
-fi
- 
-echo "${IMAGE} seems valid [`mkimage -l ${IMAGE} | grep Name:`] ."
-
-IMAGE_VER=`mkimage -l ${IMAGE} | grep Name: | cut -d : -f 3`
 
 ping -c 1 $MINER > /dev/null 2>&1
 
@@ -37,31 +25,6 @@ fi
 
 echo " ${MINER} accessible"
 
-PINGVER=`dirname $0`/pingver
-
-MINER_CURVER=`${PINGVER} ${MINER} | cut -d , -f 2`
-
-if [ "$CHECK" == "-check" ] ; then
-	echo -e "\n"
-	read -p "....Push Image $IMAGE (ver ${IMAGE_VER}) onto Miner $MINER (cur ver ${MINER_CURVER})?" -n 1 -r
-	echo    # (optional) move to a new line
-	if [[ ! $REPLY =~ ^[Yy]$ ]] ; then
-		echo Aborting
-		exit 5
-	fi
-	CHECK=-force
-fi
-
-if [ "$CHECK" != "-force" ] ; then
-	if  [ "${MINER_CURVER}" == "${IMAGE_VER}" ] ; then
-		echo -e "\n"
-		echo ".... Miner ${MINER} already has Image with the same version as ${IMAGE} ( ${IMAGE_VER})"
-		echo "Skipping !"
-		exit 6
-	fi
-fi
-
-
 
 #> /dev/null 2>&1
 echo "remove custom binaries"
@@ -70,8 +33,8 @@ echo "mount /mnt/mmc-boot"
 sshpass -p ${SSH_PASS} ssh -o StrictHostKeyChecking=no root@${MINER} mount /mnt/mmc-boot > /dev/null 2>&1
 sshpass -p ${SSH_PASS} ssh -o StrictHostKeyChecking=no root@${MINER} ls /mnt/mmc-boot/MLO > /dev/null 2>&1
 if [ $? -eq 0 ] ; then
-	echo scp $IMAGE root@${MINER} :/mnt/mmc-boot/uImage
-	sshpass -p ${SSH_PASS} scp -o StrictHostKeyChecking=no $IMAGE root@${MINER}:/mnt/mmc-boot/uImage > /dev/null 2>&1
+	echo scp $IMAGE root@${MINER} :/mnt/mmc-boot/
+	sshpass -p ${SSH_PASS} scp -o StrictHostKeyChecking=no $IMAGE root@${MINER}:/mnt/mmc-boot/ > /dev/null 2>&1
 
 	echo "sync"
 	sshpass -p ${SSH_PASS} ssh -o StrictHostKeyChecking=no root@${MINER} sync
@@ -87,8 +50,8 @@ echo "mount /mnt/sd-boot"
 sshpass -p ${SSH_PASS} ssh -o StrictHostKeyChecking=no root@${MINER} mount /mnt/sd-boot > /dev/null 2>&1
 sshpass -p ${SSH_PASS} ssh -o StrictHostKeyChecking=no root@${MINER} ls /mnt/sd-boot/MLO > /dev/null 2>&1
 if [ $? -eq 0 ] ; then
-	echo scp $IMAGE root@${MINER} :/mnt/sd-boot/uImage
-	sshpass -p ${SSH_PASS} scp -o StrictHostKeyChecking=no $IMAGE root@${MINER}:/mnt/sd-boot/uImage
+	echo scp $IMAGE root@${MINER} :/mnt/sd-boot/
+	sshpass -p ${SSH_PASS} scp -o StrictHostKeyChecking=no $IMAGE root@${MINER}:/mnt/sd-boot/
 
 	echo "sync"
 	sshpass -p ${SSH_PASS} ssh -o StrictHostKeyChecking=no root@${MINER} sync
@@ -101,10 +64,6 @@ else
 fi
 
 sleep 3
-
-echo "reboot"
-sshpass -p ${SSH_PASS} ssh -o StrictHostKeyChecking=no root@${MINER} /sbin/reboot
-
 
 
 

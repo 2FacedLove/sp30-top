@@ -13,8 +13,13 @@ start_spi()
 
 case "$1" in
 start)
+	logger "S60"
+	echo 11 > /tmp/blink_led
+	sync
 	echo "Starting SPI..."
 	start_spi
+	logger "S60 done"
+	sync
 	;;
 stop)
 	;;

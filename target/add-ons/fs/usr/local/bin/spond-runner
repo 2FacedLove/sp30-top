@@ -4,20 +4,29 @@
 # Written by Spondoolies
 
 
-MINERGATE_CMD="nohup chrt -f 90 /usr/local/bin/miner_gate_arm > /dev/null 2>&1"
+#MINERGATE_CMD="nohup chrt -f 90 /usr/local/bin/miner_gate_arm > /dev/null 2>&1"
+MINERGATE_CMD="nohup /usr/local/bin/miner_gate_arm > /dev/null 2>&1"
 CGMINER_CMD="nohup /etc/bin/cgminer --text-only --config /etc/cgminer.conf"
 export PATH=$PATH:/usr/local/bin:/bin
 
-
+try_get_time() {
+	logger "try get time start"
+	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p pool.ntp.org`
+	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p de.pool.ntp.org`
+	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p at.pool.ntp.org`
+	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p europe.pool.ntp.org`
+	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p pool.ntp.org` 
+	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p de.pool.ntp.org`
+	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p us.pool.ntp.org`
+	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p  at.pool.ntp.org `
+	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p europe.pool.ntp.org`
+	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p us.pool.ntp.org`
+	logger "try get time done"
+}
 
 
 miner_gate_arm_watchdog () {
-	if [ -f "/tmp/miner_gate_arm" ]
-	then 
-		rm -f /usr/local/bin/miner_gate_arm
-		mv /tmp/miner_gate_arm /usr/local/bin/
-	fi
-
+	try_get_time
 	$MINERGATE_CMD &
 	echo $! > /var/run/miner_gate_arm.pid
 	sleep 7
@@ -25,27 +34,21 @@ miner_gate_arm_watchdog () {
 	echo $! > /var/run/cgminer_arm.pid
 
 	while true; do
-		if [ -f "/tmp/miner_gate_arm" ]
-		then 
-			kill `pidof miner_gate_arm`
-			sleep 20
-			rm -f /usr/local/bin/miner_gate_arm
-			mv /tmp/miner_gate_arm /usr/local/bin/
-			echo "Minergate updated and restarted"
-			$MINERGATE_CMD &
-			echo $! > /var/run/miner_gate_arm.pid
-		fi
-
 		pidm=`cat /var/run/miner_gate_arm.pid`
 		if [ ! -e /proc/$pidm -a /proc/$pidm/exe ]; then
-			echo "Minergate died and restarted"
+			try_get_time
+			pkill cgminer
+			logger -s "Minergate died and restarted"
+			echo "Minergate died and restarted" >> /tmp/mg_event_log
+			/usr/local/bin/prepare-fet.sh
 			$MINERGATE_CMD &
 			echo $! > /var/run/miner_gate_arm.pid
 		fi
 
 		pidc=`cat /var/run/cgminer_arm.pid`
 		if [ ! -e /proc/$pidc -a /proc/$pidc/exe ]; then
-			echo "Cgminer died and restarted"
+			logger -s "Cgminer died and restarted"
+			echo "Cgminer died and restarted" >> /tmp/mg_event_log
 			$CGMINER_CMD &
 			echo $! > /var/run/cgminer_arm.pid
 		fi
@@ -59,7 +62,7 @@ miner_gate_arm_watchdog () {
 start_mg() {
 		logger spond-runner:start_mg
 		if [ -f "/var/run/spond-manager.running" ]; then
-			echo "minergate is already running"
+			logger -s "minergate is already running"
 		else
 			echo 1 > /var/run/spond-manager.running
 			miner_gate_arm_watchdog &
@@ -72,18 +75,24 @@ stop_mg() {
 		logger spond-runner:stop_mg
 		if [ ! -f "/var/run/spond-manager.running" ]
 		then
-			echo "Mining manager not running"
+			logger -s "Mining manager not running"
 		else
+			logger -s "Stopping MG"
+			echo "Stopping MG" >> /tmp/mg_event_log
 			pid1=`cat /var/run/miner_gate_arm_watchdog.pid`
 			pid2=`cat /var/run/cgminer_arm.pid`
 			pid3=`cat /var/run/miner_gate_arm.pid`
 			kill $pid1
 			kill $pid2
 			kill $pid3
+			sleep 3
+			kill -9 $pid1
+			kill -9 $pid2
+			kill -9 $pid3
 			rm /var/run/miner_gate_arm_watchdog.pid
 			rm /var/run/miner_gate_arm.pid
 			rm /var/run/cgminer_arm.pid
-			sleep 3
+			sleep 1
 			rm /var/run/spond-manager.running
 		fi
 }
@@ -92,9 +101,11 @@ stop_mg() {
 
 case "$1" in
 start)
+	rm /tmp/blink_led
 	start_mg
 	;;
 stop)
+	echo 2 > /tmp/blink_led
 	stop_mg
 	;;
 restart|reload)

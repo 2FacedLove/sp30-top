@@ -17,7 +17,12 @@ netplug_stop()
 
 case "$1" in
 start)
+	logger "S41"
+	echo 7 > /tmp/blink_led
+	sync
 	netplug_start
+	logger "S41 done"
+	sync
 	;;
 stop)
 	netplug_stop

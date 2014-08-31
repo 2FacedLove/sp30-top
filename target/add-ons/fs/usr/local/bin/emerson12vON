@@ -23,6 +23,35 @@ echo TOP ${TOP} , BOT ${BOTTOM}
 
 ERR=0
 
+PWR_ON ()
+{
+        if  [ "${PNR:2:4}" == "1050" ] ; then
+                echo ${PSU_NAME} EMERSON 1050
+                ADDR=0x5f
+        elif [ "${PNR:2:4}" == "1200" ] ; then
+                echo ${PSU_NAME} EMERSON 1200
+                ADDR=0x3f
+        else
+                echo "${PSU_NAME} NOT EMERSON!! AC2DC CANT TOGGLE POWER"
+                ERR=$((${ERR}+${PSU_ADDR}))
+        fi
+
+        i2cset -y 0 0x70 ${PSU_ADDR}
+        i2cset -y 0 ${ADDR} 0x01 0x80
+        sleep 2
+
+        #verify ON (can access i2c 0x71)
+        i2cset -y 0 0x70 ${BRD_ADDR}
+        i2cset -y 0 0x71 0x00 > /dev/null 2>&1
+        if [ $? -ne 0 ] ; then
+                echo "12v OFF - oh oh , failed to power ${PSU_NAME} 12v UP!"
+                ERR=$((${ERR}+${PSU_ADDR}))
+        else
+                echo "${PSU_NAME} 12v ON, GOOD! "
+        	echo "We're done ${PSU_NAME} power 12v cycle"
+        fi
+}
+
 PWR_OFF ()
 {
         if  [ "${PNR:2:4}" == "1050" ] ; then
@@ -58,7 +87,7 @@ if [ ${TOP} -eq 1 ] ; then
         PSU_ADDR=0x10
         BRD_ADDR=0x04
         PSU_NAME=TOP
-        PWR_OFF
+        PWR_ON
 fi        
 
 if [ ${BOTTOM} -eq 1 ] ; then
@@ -66,7 +95,7 @@ if [ ${BOTTOM} -eq 1 ] ; then
         PSU_ADDR=0x01
         BRD_ADDR=0x08
         PSU_NAME=BOTTOM
-        PWR_OFF
+        PWR_ON
 fi        
 
 exit ${ERR}

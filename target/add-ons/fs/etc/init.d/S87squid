@@ -22,18 +22,13 @@ load_fpga() {
 
 case "$1" in
 start)
-#	NORMALBOOT=1
-#	if [ -e "/sd/autorun" ]; then
-#		NORMALBOOT=0
-#	fi
-#	if [ -e "/mmc/autorun" ]; then
-#		NORMALBOOT=0
-#	fi
-#
-#	if [ ${NORMALBOOT} -eq 1 ]; then 
-		echo "Loading FPGA..."
-		load_fpga
-#	fi
+	logger "S87"
+	echo 13 > /tmp/blink_led
+	sync
+	echo "Loading FPGA..."
+	load_fpga
+	logger "S87 done"
+	sync
 	;;
 stop)
 	;;

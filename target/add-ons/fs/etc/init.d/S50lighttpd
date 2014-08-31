@@ -20,7 +20,11 @@ restart() {
 
 case "$1" in
   start)
+	logger "S50"
+	sync
 	start
+	logger "S50 done"
+	sync
 	;;
   stop)
 	stop

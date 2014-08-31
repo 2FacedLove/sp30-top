@@ -6,6 +6,10 @@ SYSLOG_FILE="/mnt/config/log/messages"
 MAX_NVM_LOG_SIZE=5000
 
 reboot_miner_safe() {
+	logger reboot_miner_safe
+	kill `pidof watchdog`
+	echo "Reboot from mining WD" >> /tmp/mg_event_log
+	watchdog -T 15 -t 30 /dev/watchdog0
 	NVM_LOG_SIZE=$(du -a "$NVM_LOG" | cut -f 1)
 	if [ $NVM_LOG_SIZE -ge $MAX_NVM_LOG_SIZE ]; then
 		echo "removing huge log file"
@@ -17,7 +21,7 @@ reboot_miner_safe() {
 	echo "-----------------------" >> $NVM_LOG
 	echo `date` >> $NVM_LOG
 	echo "-----------------------" >> $NVM_LOG
-	ps >> $NVM_LOG
+	ps -l >> $NVM_LOG
 	echo "-----------------------" >> $NVM_LOG
 	cat /proc/meminfo >> $NVM_LOG
 	echo "-----------------------" >> $NVM_LOG
@@ -36,11 +40,24 @@ reboot_miner_safe() {
 
 
 loop() {
+sleep 180
+
+	if [ -f "/etc/mg_test_reboot" ] 
+	then
+		logger "testing reboot"
+		reboot
+	fi
+
 while true; do
-	sleep 260
+	sleep 150
 	# test free memory
 	FREE_MEM=`awk '/MemFree/ {printf( "%.2d\n", $2 / 1024 )}' /proc/meminfo`
-	[ $FREE_MEM -lt 100 ] && reboot_miner_safe 
+	logger "free-memory:$FREE_MEM"
+	if [ $FREE_MEM -lt 100 ]
+	then
+		logger "Too little memory"
+		reboot_miner_safe 
+	fi
 	
 	# test mining
 	if [ -f $WATCHDOG_FILE ] 
@@ -49,7 +66,25 @@ while true; do
 	else
 		mining_watchdog=`cat /etc/mining_watchdog`
 		mining_status=`cat /etc/mining_status`
-		[ $mining_watchdog -gt 0 ] && [ $mining_status -gt 0 ] && reboot_miner_safe 
+		
+		if [ $mining_status -gt 0 ] 
+		then
+			logger "Watchdog caught problem - what to do what to do?"
+			if [ $mining_watchdog -gt 0 ] 
+			then
+				logger "Watchdog caught problem: soft handle"
+				echo "Watchdog caught problem: soft handle" >> /tmp/mg_event_log
+				pkill miner_gate_arm
+				#sleep 120
+				#if [ ! -f $WATCHDOG_FILE ] 
+				#then 
+					#logger "Watchdog caught BIG problem: hard handle not"
+					# reboot_miner_safe not till boot issue resolved
+				#fi
+			else
+				logger "Do nothing WD disabled"
+			fi
+		fi
 	fi
 	done
 }

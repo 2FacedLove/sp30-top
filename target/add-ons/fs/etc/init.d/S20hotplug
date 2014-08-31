@@ -13,7 +13,12 @@ start_hotplug()
 
 case "$1" in
 start)
+	echo 5 > /tmp/blink_led
+	logger "S20 start"
+	sync
 	start_hotplug
+	logger "S20 done"
+	sync
 	;;
 stop)
 	;;

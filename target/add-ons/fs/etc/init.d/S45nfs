@@ -25,7 +25,12 @@ unmount_nfs()
 
 case "$1" in
 start)
+	logger "S45"
+	echo 8 > /tmp/blink_led
+	sync
 	mount_nfs
+	logger "S45 done"
+	sync
 	;;
 stop)
 	unmount_nfs

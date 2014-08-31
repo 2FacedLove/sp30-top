@@ -1,5 +1,5 @@
 get:
-	git clone https://github.com/zvisha/miner_gate_sp30.git src
+	git clone https://github.com/Spondoolies-Tech/miner_gate_sp30.git
 
 init:
 

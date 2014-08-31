@@ -6,8 +6,13 @@
 export PATH=$PATH:/usr/local/bin:/bin
 case "$1" in
 start)
+	logger "S30"
+	echo 6 > /tmp/blink_led
+	sync
 	echo "Setting hostname..."
 	/bin/hostname `eeprom-read-hostname.sh`
+	logger "S30 done"
+	sync
 	;;
 stop)
 	;;

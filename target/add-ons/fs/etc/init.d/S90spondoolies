@@ -12,11 +12,18 @@ DAEMON=miner_starter_simple
 
 case "$1" in
 start)
-	# bullshit
+	logger "S90"
+	echo 2 > /tmp/blink_led
+	sync
 	NORMALBOOT=1
 	#	mount /mnt/sd-boot
 	#	mount /mnt/mmc-config
 	#	mount /mnt/mmc-boot
+	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p pool.ntp.org`
+	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p de.pool.ntp.org`
+	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p at.pool.ntp.org`
+	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p europe.pool.ntp.org`
+	/usr/local/bin/prepare-fet.sh
 	if [ -e "/mnt/mmc-config/autorun" ]; then
 		NORMALBOOT=0
 		/mnt/mmc-config/autorun
@@ -36,6 +43,8 @@ start)
 		echo $! > /var/run/ifup-requester.pid
 		/usr/local/bin/mining_watchdog start
 	fi
+	logger "S90 done"
+	sync
 	;;
 stop)
 	/usr/local/bin/mining_watchdog stop

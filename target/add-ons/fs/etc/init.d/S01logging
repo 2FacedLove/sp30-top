@@ -3,9 +3,32 @@
 # Start logging
 #
 
+
+blink_thread(){
+	while true; do
+		usleep 700000
+		if [ -e "/tmp/blink_led" ]; then
+			times=`cat /tmp/blink_led`
+			i=0
+			while [  $i -lt $times ]; do
+				echo 1 >> /sys/class/gpio/gpio22/value
+				usleep 100000
+				echo 0 >> /sys/class/gpio/gpio22/value
+				usleep 250000
+				let i=i+1 
+			done    
+		fi
+	done
+}
+
+
 case "$1" in
   start)
-	echo -n "Starting logging: "
+	echo -n "Starting logging and wd and blink thread:"
+	blink_thread &
+	echo 20 > /tmp/blink_led
+	pkill watchdog
+	watchdog -T 60 -t 80 /dev/watchdog0
 	start-stop-daemon -S -q -p /var/run/syslogd.pid --exec /sbin/syslogd -- -m 0
 	start-stop-daemon -S -q -p /var/run/klogd.pid --exec /sbin/klogd
 	echo "OK"
