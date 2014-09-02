@@ -25,13 +25,16 @@ stop)
 	#${DAEMON} stop
 	#${DAEMON} passive &
 	;;
+status)
+	cat ${MINING_STATUS}
+	;;
 restart|reload)
 	/usr/local/bin/spond-runner stop		
 	#IT WILL BOOT ITSELF
 	"$0" start
 	;;
 *)
-	echo "Usage: $0 {start|stop|restart}"
+	echo "Usage: $0 {start|stop|restart|status}"
 	exit 1
 esac
 

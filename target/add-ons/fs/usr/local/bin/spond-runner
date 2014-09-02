@@ -89,6 +89,8 @@ stop_mg() {
 			kill -9 $pid1
 			kill -9 $pid2
 			kill -9 $pid3
+			pkill -9 miner_gate_arm
+			pkill -9 cgminer
 			rm /var/run/miner_gate_arm_watchdog.pid
 			rm /var/run/miner_gate_arm.pid
 			rm /var/run/cgminer_arm.pid
