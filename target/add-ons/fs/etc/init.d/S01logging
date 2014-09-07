@@ -28,7 +28,7 @@ case "$1" in
 	blink_thread &
 	echo 20 > /tmp/blink_led
 	pkill watchdog
-	watchdog -T 60 -t 80 /dev/watchdog0
+	watchdog -T 210 -t 300 /dev/watchdog0
 	start-stop-daemon -S -q -p /var/run/syslogd.pid --exec /sbin/syslogd -- -m 0
 	start-stop-daemon -S -q -p /var/run/klogd.pid --exec /sbin/klogd
 	echo "OK"

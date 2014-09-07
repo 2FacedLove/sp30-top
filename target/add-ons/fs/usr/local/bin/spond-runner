@@ -11,16 +11,8 @@ export PATH=$PATH:/usr/local/bin:/bin
 
 try_get_time() {
 	logger "try get time start"
-	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p pool.ntp.org`
-	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p de.pool.ntp.org`
-	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p at.pool.ntp.org`
+	#[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p pool.ntp.org`
 	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p europe.pool.ntp.org`
-	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p pool.ntp.org` 
-	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p de.pool.ntp.org`
-	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p us.pool.ntp.org`
-	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p  at.pool.ntp.org `
-	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p europe.pool.ntp.org`
-	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p us.pool.ntp.org`
 	logger "try get time done"
 }
 
@@ -29,14 +21,13 @@ miner_gate_arm_watchdog () {
 	try_get_time
 	$MINERGATE_CMD &
 	echo $! > /var/run/miner_gate_arm.pid
-	sleep 7
+	sleep 10
 	$CGMINER_CMD &
 	echo $! > /var/run/cgminer_arm.pid
 
 	while true; do
 		pidm=`cat /var/run/miner_gate_arm.pid`
 		if [ ! -e /proc/$pidm -a /proc/$pidm/exe ]; then
-			try_get_time
 			pkill cgminer
 			logger -s "Minergate died and restarted"
 			echo "Minergate died and restarted" >> /tmp/mg_event_log

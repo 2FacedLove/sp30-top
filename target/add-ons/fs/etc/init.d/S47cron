@@ -5,30 +5,20 @@
 
 cron_start()
 {
-	if [ ${NORMALBOOT} -eq 1 ]; then 
-		logger "ntpd -qdn -p pool.ntp.org"
-		[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p pool.ntp.org`
-		logger "ntpd -qdn -p de.pool.ntp.org"
-		[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p de.pool.ntp.org`
-		logger "ntpd -qdn -p at.pool.ntp.org"
-		[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p at.pool.ntp.org`
-		logger "ntpd -qdn -p europe.pool.ntp.org"
-		[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p europe.pool.ntp.org`
-		logger "ntpd -qdn -p pool.ntp.org"
-		[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p pool.ntp.org` 
-		logger "ntpd -qdn -p de.pool.ntp.org"
-		[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p de.pool.ntp.org`
-		logger "ntpd -qdn -p us.pool.ntp.org"
-		[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p us.pool.ntp.org`
-		logger "ntpd -qdn -p at.pool.ntp.org"
-		[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p  at.pool.ntp.org `
-		logger "ntpd -qdn -p europe.pool.ntp.org"
-		[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p europe.pool.ntp.org`
-		logger "ntpd -qdn -p us.pool.ntp.org"
-		[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p us.pool.ntp.org`
-		logger "Done ntpd"
-	fi
-
+	#if [ ${NORMALBOOT} -eq 1 ]; then 
+	#	logger "ntpd -qdn -p pool.ntp.org"
+	#	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p pool.ntp.org`
+	#	logger "ntpd -qdn -p de.pool.ntp.org"
+	#	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p de.pool.ntp.org`
+	#	logger "ntpd -qdn -p at.pool.ntp.org"
+	#	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p at.pool.ntp.org`
+	#	logger "ntpd -qdn -p europe.pool.ntp.org"
+	#	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p europe.pool.ntp.org`
+	#	logger "ntpd -qdn -p pool.ntp.org"
+	#	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p pool.ntp.org` 
+	#	logger "ntpd -qdn -p de.pool.ntp.org"
+	#	logger "Done ntpd"
+	#fi
 	/usr/sbin/crond
 }
 
