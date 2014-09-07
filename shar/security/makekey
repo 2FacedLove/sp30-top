@@ -1,0 +1,10 @@
+Private key generation:
+
+        openssl  genrsa  -out  spondoolies.pem  2048
+
+Public key extraction:
+
+        openssl rsa -in spondoolies.pem -pubout > spondoolies-pub.pem
+
+Best regards,
+Vladik

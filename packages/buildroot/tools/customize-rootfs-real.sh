@@ -134,13 +134,13 @@ mounts()
 
 }
 
-sw_upgrade()
-{
-	for f in download-file.sh upgrade-software.sh verify-digest.sh
-	do
-		cp -a ${CUR_DIR}/../provisioning/${f} usr/local/bin
-	done
-}
+#sw_upgrade()
+#{
+#	for f in download-file.sh upgrade-software.sh verify-digest.sh
+#	do
+#		cp -a ${CUR_DIR}/../provisioning/${f} usr/local/bin
+#	done
+#}
 
 
 cron()
@@ -187,7 +187,7 @@ main()
 	memtester
 	web_server
 	mounts
-	sw_upgrade
+	#sw_upgrade
 	cron
 	rrd
 	cryptodev

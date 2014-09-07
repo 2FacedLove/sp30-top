@@ -1,0 +1,73 @@
+#!/bin/sh
+
+BOTTOM=0
+TOP=0
+
+if [ "$1" == "top" ]  ; then
+                TOP=1
+elif [ "$1" == "bottom" ] ; then
+                BOTTOM=1
+elif [ "$1" == "both" ] ; then
+                BOTTOM=1
+                TOP=1
+fi
+
+echo TOP ${TOP} , BOT ${BOTTOM}
+if [ ${TOP} -eq 0 ] && [ ${BOTTOM} -eq 0 ] ; then
+        BOTTOM=1
+fi
+
+echo TOP ${TOP} , BOT ${BOTTOM}
+#exit
+
+
+ERR=0
+
+PWR_OFF ()
+{
+        if  [ "${PNR:2:4}" == "1050" ] ; then
+                echo ${PSU_NAME} EMERSON 1050
+                ADDR=0x5f
+        elif [ "${PNR:2:4}" == "1200" ] ; then
+                echo ${PSU_NAME} EMERSON 1200
+                ADDR=0x3f
+        else
+                echo "${PSU_NAME} NOT EMERSON!! AC2DC CANT TOGGLE POWER"
+                ERR=$((${ERR}+${PSU_ADDR}))
+        fi
+
+        i2cset -y 0 0x70 ${PSU_ADDR}
+        i2cset -y 0 ${ADDR} 0x10 0x00
+        i2cset -y 0 ${ADDR} 0x01 0x40
+        sleep 2
+
+        #verify OFF (cant access i2c 0x71)
+        i2cset -y 0 0x70 ${BRD_ADDR}
+        i2cset -y 0 0x71 0x00 > /dev/null 2>&1
+        if [ $? -ne 0 ] ; then
+                echo "${PSU_NAME} 12v OFF. GOOD!"
+        else
+                echo "12v ON. oh oh Failed ot put ${PSU_NAME} 12V OFF"
+                ERR=$((${ERR}+${PSU_ADDR}))
+        fi
+
+}
+
+if [ ${TOP} -eq 1 ] ; then
+        PNR=`ac2dcvpd -top -p -q 2>/dev/null`
+        PSU_ADDR=0x10
+        BRD_ADDR=0x04
+        PSU_NAME=TOP
+        PWR_OFF
+fi        
+
+if [ ${BOTTOM} -eq 1 ] ; then
+        PNR=`ac2dcvpd -bottom -p -q 2>/dev/null`
+        PSU_ADDR=0x01
+        BRD_ADDR=0x08
+        PSU_NAME=BOTTOM
+        PWR_OFF
+fi        
+
+exit ${ERR}
+
