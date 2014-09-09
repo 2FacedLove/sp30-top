@@ -26,7 +26,7 @@ shar_missing=208
 
 
 bootfrom=
-board_id=`cat /board_ver`
+board_id=`cat /model_id`
 software_version=`cat /fw_ver`
 
 

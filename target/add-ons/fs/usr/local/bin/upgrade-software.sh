@@ -33,7 +33,7 @@ shar_missing=208
 url=
 tar=
 bootfrom=
-board_id=`cat /board_ver`
+board_id=`cat /model_id`
 software_version=`cat /fw_ver`
 
 
@@ -126,7 +126,7 @@ get_software_version()
 download_software()
 {
 	cd /tmp
-	echo "Downloading url:${url}"
+	echo "Downloading url:${url}?id=${board_id}&ver=${software_version}"
 	download-file.sh --url=${url}						\
 			--query="id=${board_id}&ver=${software_version}" ||	\
 		{ rc=$?; echo "download fail, rc = ${rc}"; exit ${rc}; }

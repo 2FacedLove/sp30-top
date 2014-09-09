@@ -59,5 +59,5 @@ calcfet
 BOTFET=${FET}
 
 
-echo "0:${TOPFET} 1:${BOTFET}" > /etc/fet
+echo "0:${TOPFET} 1:${BOTFET}" > /tmp/mg_fet
 
