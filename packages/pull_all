@@ -9,7 +9,7 @@ cd $WD/minepeon/src/
 git pull
 cd $WD/u-boot/src/
 git pull
-cd $WD/spilib/
+cd $WD/spilib/src/
 git pull
 cd $WD/cryptodev/src/
 git pull

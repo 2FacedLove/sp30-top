@@ -30,7 +30,7 @@ git commit -a -m "$COMMENT"
 git tag -a "$TAG" -m "$COMMENT"
 git push
 
-cd $WD/spilib/
+cd $WD/spilib/src/
 git commit -a -m "$COMMENT"
 git tag -a "$TAG" -m "$COMMENT"
 git push
