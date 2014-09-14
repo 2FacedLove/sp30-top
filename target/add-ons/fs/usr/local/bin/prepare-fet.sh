@@ -16,11 +16,10 @@
 #ELA-2003 B02
 #ELA-2013 B03
 
-FC=`cat /etc/fet`
-OLDTOP=${FC:4:1}
-OLDBOT=${FC:13:1}
-
-
+FETFILE="/tmp/mg_fet"
+FC=`cat ${FETFILE}`
+OLDTOP=${FC:2:1}
+OLDBOT=${FC:6:1}
 
 calcfet()
 {
@@ -59,5 +58,5 @@ calcfet
 BOTFET=${FET}
 
 
-echo "0:${TOPFET} 1:${BOTFET}" > /tmp/mg_fet
+echo "0:${TOPFET} 1:${BOTFET}" > ${FETFILE}
 
