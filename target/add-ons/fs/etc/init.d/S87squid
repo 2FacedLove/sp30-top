@@ -14,6 +14,16 @@ load_fpga() {
 	echo 1 > /sys/class/gpio/gpio22/value
 
 	cd /spond-data
+
+	
+	MODEL_ID=`cat /model_id`
+
+	if [ "${MODEL_ID}" == "SP3x" ] ; then 
+		/usr/local/bin/fpga-load.sh squid_top.jam
+	else
+		/usr/local/bin/fpga-load.sh squid_top_sp20_rev100.jam
+	fi 
+	
 	/usr/local/bin/fpga-load.sh squid_top.jam
 	echo 0 > /sys/class/gpio/gpio22/value
 }
