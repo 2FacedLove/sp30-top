@@ -68,6 +68,7 @@ led_init()
 
 case "$1" in
 start)
+	
 	logger "S13"
 	echo 4 > /tmp/blink_led
 	sync
@@ -75,6 +76,14 @@ start)
 	fans_off	
 	misc_start
 	led_init
+	MODEL_ID=`cat /model_id`
+	cd /usr/local/bin/
+	rm ./miner_gate_arm
+	if [ "${MODEL_ID}" == "SP3x" ] ; then 
+		ln -s /etc/bin/miner_gate_sp30 ./miner_gate_arm
+	else
+		ln -s /etc/bin/miner_gate_sp20 ./miner_gate_arm		
+	fi 
 	logger "S13 done"
 	sync
 	;;

@@ -81,7 +81,8 @@ copy_all_spond_files() {
 	cp ${CUR_DIR}/../scripts/setdcrind usr/local/bin
 	#cp ${CUR_DIR}/../scripts/read-mng-eeprom-stripped.sh usr/local/bin
 	mkdir -p etc/bin
-	cp ${CUR_DIR}/../../spilib/src/miner_gate/miner_gate_arm etc/bin
+	cp ${CUR_DIR}/../../spilib/src/miner_gate/miner_gate_sp20 etc/bin
+	cp ${CUR_DIR}/../../spilib/src/miner_gate/miner_gate_sp30 etc/bin
 	cp ${CUR_DIR}/../../cgminer/src/cgminer etc/bin/
 	cp ${CUR_DIR}/../../spilib/src/miner_gate_test_arm usr/local/bin
 	cp ${CUR_DIR}/../../spilib/src/hammer_reg/reg usr/local/bin
