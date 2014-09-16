@@ -19,6 +19,13 @@ rrd_dirs()
 	ln -s /mnt/config/rrd ./
 }
 
+setboxtype()
+{
+	BOX=`boxtype.sh`
+	echo ${BOX} > /model_name
+	echo ${BOX:0:3}x > /model_id
+}
+
 misc_start()
 {
 	rrd_dirs
@@ -66,6 +73,11 @@ led_init()
 }
 
 
+if [ `echo ${PATH} | grep -c /usr/local/bin` -eq 0 ] ; then
+        export PATH=$PATH:/usr/local/bin/
+fi
+
+
 case "$1" in
 start)
 	
@@ -81,8 +93,10 @@ start)
 	rm ./miner_gate_arm
 	if [ "${MODEL_ID}" == "SP3x" ] ; then 
 		ln -s /etc/bin/miner_gate_sp30 ./miner_gate_arm
+		ln -s ./mainvpd ./mainvpd_sp3x  
 	else
 		ln -s /etc/bin/miner_gate_sp20 ./miner_gate_arm		
+		ln -s ./mainvpd ./mainvpd_sp2x 
 	fi 
 	logger "S13 done"
 	sync
