@@ -82,6 +82,7 @@ case "$1" in
 start)
 	
 	logger "S13"
+	setboxtype	
 	echo 4 > /tmp/blink_led
 	sync
 	reset_i2c
@@ -93,10 +94,10 @@ start)
 	rm ./miner_gate_arm
 	if [ "${MODEL_ID}" == "SP3x" ] ; then 
 		ln -s /etc/bin/miner_gate_sp30 ./miner_gate_arm
-		ln -s ./mainvpd ./mainvpd_sp3x  
+		ln -s ./mainvpd_sp3x ./mainvpd   
 	else
 		ln -s /etc/bin/miner_gate_sp20 ./miner_gate_arm		
-		ln -s ./mainvpd ./mainvpd_sp2x 
+		ln -s ./mainvpd_sp2x ./mainvpd  
 	fi 
 	logger "S13 done"
 	sync
