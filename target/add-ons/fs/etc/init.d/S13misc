@@ -91,13 +91,20 @@ start)
 	led_init
 	MODEL_ID=`cat /model_id`
 	cd /usr/local/bin/
-	rm ./miner_gate_arm
+	rm /usr/local/bin/miner_gate_arm
+	rm /usr/local/bin/mainvpd
+	rm /etc/mg_disabled_asics
+	rm /etc/mg_custom_mode
 	if [ "${MODEL_ID}" == "SP3x" ] ; then 
-		ln -s /etc/bin/miner_gate_sp30 ./miner_gate_arm
-		ln -s ./mainvpd_sp3x ./mainvpd   
+		ln -s /etc/bin/miner_gate_sp30 /usr/local/bin/miner_gate_arm
+		ln -s /etc/mg_custom_mode_sp30 /etc/mg_custom_mode
+		ln -s /etc/mg_disabled_asics_sp30 /etc/mg_disabled_asics
+		ln -s /usr/local/bin/mainvpd_sp3x /usr/local/bin/mainvpd   
 	else
-		ln -s /etc/bin/miner_gate_sp20 ./miner_gate_arm		
-		ln -s ./mainvpd_sp2x ./mainvpd  
+		ln -s /etc/bin/miner_gate_sp20 /usr/local/bin/miner_gate_arm	
+		ln -s /etc/mg_custom_mode_sp20 /etc/mg_custom_mode
+		ln -s /etc/mg_disabled_asics_sp20 /etc/mg_disabled_asics
+		ln -s /usr/local/bin/mainvpd_sp2x /usr/local/bin/mainvpd  
 	fi 
 	logger "S13 done"
 	sync
