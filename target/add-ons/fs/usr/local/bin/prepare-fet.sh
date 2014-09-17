@@ -41,9 +41,9 @@ calcfet()
 				FET=2
 			fi
 		elif [ ${PNR:4} -eq 1003 ] ; then 
-			FET=1
+			FET=5
 		elif [ ${PNR:4} -eq 1013 ] ; then 
-			FET=0
+			FET=4
 		fi
 	fi
 }
