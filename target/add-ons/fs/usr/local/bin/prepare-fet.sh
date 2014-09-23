@@ -18,10 +18,20 @@
 
 FETFILE="/tmp/mg_fet"
 FC=`cat ${FETFILE}`
-#OLDTOP=${FC:2:1}
-OLDTOP=1
-#OLDBOT=${FC:6:1}
-OLDBOT=1
+
+#default fet for "all" cases (SP30 old boards)
+OLDTOP=0
+OLDBOT=0
+
+#default for SP20
+boxtype.sh
+BOXTYPE=$?
+
+if [ ${BOXTYPE} -eq 20 ] ; then
+	OLDTOP=5
+	OLDBOT=5
+fi
+ 
 
 calcfet()
 {
