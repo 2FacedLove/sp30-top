@@ -3,6 +3,22 @@
 # this is not a service, just a place to run anything that needs to happen on startup
 #
 
+
+set_normal_boot()
+{
+	NORMALBOOT=1
+
+	if [ -e "/mnt/mmc-config/autorun" ]; then
+		NORMALBOOT=0
+	fi
+
+	mount /mnt/sd-boot 2>/dev/null
+	if [ -e "/mnt/sd-boot/autorun" ]; then
+		NORMALBOOT=0
+	fi
+	umount /mnt/sd-boot 2>/dev/null
+}
+
 ssl_cert()
 {
 	# generate an ssl certificate for the IP of this server (assumes eth0)
@@ -17,11 +33,15 @@ ssl_cert()
 case "$1" in
 start|"")
 	#ntpd -qn -p pool.ntp.org # set system time, no daemon
+
+	set_normal_boot
 	logger "S98"
-	sync
-	ssl_cert 
-	/etc/cron.d/pandp_register.sh &
-	/etc/cron.d/RECORDHashrate    &
+	if [ ${NORMALBOOT} -eq 1 ]; then 
+		sync
+		ssl_cert 
+		/etc/cron.d/pandp_register.sh &
+		/etc/cron.d/RECORDHashrate    &
+	fi	
 	ln -s /mnt/config/log/messages /var/log/messages2
 	logger "S98 done"
 	sync

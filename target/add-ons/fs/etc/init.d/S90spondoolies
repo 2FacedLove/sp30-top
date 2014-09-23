@@ -21,7 +21,7 @@ start)
 	#	mount /mnt/mmc-boot
 	#[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p pool.ntp.org`
 	#[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p de.pool.ntp.org`
-	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p europe.pool.ntp.org`
+	#[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p europe.pool.ntp.org`
 	/usr/local/bin/prepare-fet.sh
 	if [ -e "/mnt/mmc-config/autorun" ]; then
 		NORMALBOOT=0
@@ -37,6 +37,7 @@ start)
 
 	echo "NORMALBOOT=${NORMALBOOT}"
 	if [ ${NORMALBOOT} -eq 1 ]; then 
+		[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p europe.pool.ntp.org`
 		${DAEMON} start
 		/usr/local/bin/ifup-requester &
 		echo $! > /var/run/ifup-requester.pid

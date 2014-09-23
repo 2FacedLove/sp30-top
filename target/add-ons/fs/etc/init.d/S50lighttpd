@@ -18,13 +18,32 @@ restart() {
 	start
 }
 
+set_normal_boot() {
+	NORMALBOOT=1
+	if [ -e "/mnt/mmc-config/autorun" ]; then
+		NORMALBOOT=0
+	else
+		mount /mnt/sd-boot
+		if [ -e "/mnt/sd-boot/autorun" ]; then
+			NORMALBOOT=0
+		fi
+		umount /mnt/sd-boot
+	fi
+}
+
+set_normal_boot
+
 case "$1" in
   start)
-	logger "S50"
-	sync
-	start
-	logger "S50 done"
-	sync
+	if [ ${NORMALBOOT} -eq 1 ]; then
+		logger "S50"
+		sync
+		start
+		logger "S50 done"
+		sync
+	else
+		logger "NORMALBOOT=${NORMALBOOT} SKIPPING S50"
+	fi	
 	;;
   stop)
 	stop
