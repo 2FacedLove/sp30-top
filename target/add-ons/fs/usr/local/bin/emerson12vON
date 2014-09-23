@@ -35,7 +35,7 @@ SET_ADDR_CMD ()
         ADDR=0x3f
         ON_CMD=0x80
         OFF_CMD=0x40
-    elif [ "${PNR:0:5}" == "1U3CS" ] ; then
+    elif [ `echo ${PNR} | grep -c 1U3CS` -eq 1 ] ; then
         echo ${PSU_NAME} NEW MURATA
         ADDR=0x5f
         ON_CMD=0x80
