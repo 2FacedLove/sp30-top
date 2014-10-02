@@ -33,6 +33,19 @@ misc_start()
 #	echo "TOP:0 BOTTOM:0" > /etc/fet NOT YET!!
 }
 
+powerup_12v()
+{
+   
+	emerson12vON both
+	PURC=$?
+	sleep 3
+	if [ ${PURC} -ne 0 ] ; then
+		emerson12vON both
+		PURC=$?
+		sleep 3	
+	fi
+}
+
 fans_off()
 {
 	GP=110
@@ -85,6 +98,7 @@ start)
 	setboxtype	
 	echo 4 > /tmp/blink_led
 	sync
+	powerup_12v
 	reset_i2c
 	fans_off	
 	misc_start
