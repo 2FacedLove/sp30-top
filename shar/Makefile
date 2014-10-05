@@ -34,7 +34,7 @@ shar:	../target/add-ons/fs/fw_ver ../packages/u-boot/src/u-boot.img
 .PHONY:	latest
 latest:
 	makeself $(MAKESELF_FLAGS) latest $(SHAR) "$(SHAR_NAME)" $(SCRIPT)
-	../provisioning/sign-digest.sh --file=$(SHAR) --private=$(PRIVATE_KEY)
+	../packages/buildroot/provisioning/sign-digest.sh --file=$(SHAR) --private=$(PRIVATE_KEY)
 	tar cf $(TAR_LATEST_FILE) $(SHAR) $(SHAR).sign
 	$(RM) -f $(SHAR) $(SHAR).sign
 	

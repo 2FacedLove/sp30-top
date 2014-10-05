@@ -147,7 +147,7 @@ untar()
 verify_shar()
 {
 	verify-digest.sh --file=${SHAR} --public=${SPON_PUBLIC_KEY} ||
-		{ echo "${SHAR}: bad signature"; exit ${bad_signature}; }
+		{ echo verify-digest.sh --file=${SHAR} --public=${SPON_PUBLIC_KEY};  echo "${SHAR}: bad signature"; exit ${bad_signature}; }
 }
 
 
