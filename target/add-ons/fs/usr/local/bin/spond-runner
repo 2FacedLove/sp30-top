@@ -19,6 +19,7 @@ try_get_time() {
 
 miner_gate_arm_watchdog () {
 	try_get_time
+	/usr/local/bin/prepare-fet.sh
 	$MINERGATE_CMD &
 	echo $! > /var/run/miner_gate_arm.pid
 	sleep 10

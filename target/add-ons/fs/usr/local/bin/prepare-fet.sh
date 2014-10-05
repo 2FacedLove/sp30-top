@@ -25,7 +25,7 @@ OLDBOT=0
 
 #default for SP20
 boxtype.sh
-BOXTYPE=$?
+BOXTYPE=$? #this is not error-code, this is value!
 
 if [ ${BOXTYPE} -eq 20 ] ; then
 	OLDTOP=5
@@ -62,18 +62,26 @@ calcfet()
 # first - TOP
 PNR=`mainvpd -top -q -p`
 REV=`mainvpd -top -q -r`
-RC=$?
-FET=${OLDTOP}
-calcfet
-TOPFET=${FET}
-
+RC=$? #this is error-code - there is no 12V.
+if [ $RC -ne 0 ] ; then 
+	TOPFET=100
+else
+	FET=${OLDTOP}
+	calcfet
+	TOPFET=${FET}
+fi 
 # then BOTTOM
 PNR=`mainvpd -bottom -q -p`
 REV=`mainvpd -bottom -q -r`
-RC=$?
-FET=${OLDBOT}
-calcfet
-BOTFET=${FET}
+RC=$? #this is error-code - there is no 12V.
+if [ $RC -ne 0 ] ; then 
+	BOTFET=100
+else
+	FET=${OLDBOT}
+	calcfet
+	BOTFET=${FET}
+fi 
+
 
 
 echo "0:${TOPFET} 1:${BOTFET}" > ${FETFILE}
