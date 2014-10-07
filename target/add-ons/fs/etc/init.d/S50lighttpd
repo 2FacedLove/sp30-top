@@ -4,6 +4,8 @@
 #
 
 start() {
+	m_name=`cat /model_name`
+	sed -i "s/MODEL_NAME/$m_name/" /etc/lighttpd/lighttpd.conf
 	echo -n "Starting lighttpd: "
 	start-stop-daemon -S -q -p /var/run/lighttpd.pid --exec /usr/sbin/lighttpd -- -f /etc/lighttpd/lighttpd.conf
 	echo "OK"
