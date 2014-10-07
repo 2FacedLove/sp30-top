@@ -30,6 +30,9 @@ BOXTYPE=$? #this is not error-code, this is value!
 if [ ${BOXTYPE} -eq 20 ] ; then
 	OLDTOP=5
 	OLDBOT=5
+elif [ ${BOXTYPE} -eq 31 ] ; then
+	OLDTOP=1
+	OLDBOT=1
 fi
  
 
@@ -43,6 +46,20 @@ calcfet()
 			else
 				FET=3
 			fi
+		elif [ ${PNR:4} -eq 2103 ] ; then
+			#echo FET 1/3
+			#if [ ${REV:2} -lt 2 ] ; then
+				FET=1
+			#else
+			#	FET=3
+			#fi
+		elif [ ${PNR:4} -eq 2113 ] ; then
+			#echo FET 0/2
+			#if [ ${REV:2} -lt 2 ] ; then
+				FET=0
+			#else
+			#	FET=2
+			#fi
 		elif [ ${PNR:4} -eq 2013 ] ; then 
 			#echo FET 0/2
 			if [ ${REV:2} -lt 3 ] ; then
