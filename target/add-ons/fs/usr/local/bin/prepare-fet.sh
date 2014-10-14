@@ -40,26 +40,12 @@ calcfet()
 {
 	if [ ${RC} -eq 0 ] ; then
 		if [ ${PNR:4} -eq 2003 ] ; then
-			#echo FET 1/3
+			#echo FET 1/3 72B
 			if [ ${REV:2} -lt 2 ] ; then
 				FET=1
 			else
 				FET=3
 			fi
-		elif [ ${PNR:4} -eq 2103 ] ; then
-			#echo FET 1/3
-			#if [ ${REV:2} -lt 2 ] ; then
-				FET=1
-			#else
-			#	FET=3
-			#fi
-		elif [ ${PNR:4} -eq 2113 ] ; then
-			#echo FET 0/2
-			#if [ ${REV:2} -lt 2 ] ; then
-				FET=0
-			#else
-			#	FET=2
-			#fi
 		elif [ ${PNR:4} -eq 2013 ] ; then 
 			#echo FET 0/2
 			if [ ${REV:2} -lt 3 ] ; then
@@ -67,6 +53,15 @@ calcfet()
 			else
 				FET=2
 			fi
+		elif [ ${PNR:4} -eq 2103 ] ; then
+				#72B4P50A		
+				FET=5 
+		elif [ ${PNR:4} -eq 2113 ] ; then
+				#72A3P50A
+				FET=2
+		elif [ ${PNR:4} -eq 2123 ] ; then
+				#78B3P50A
+				FET=11
 		elif [ ${PNR:4} -eq 1003 ] ; then 
 			FET=5
 		elif [ ${PNR:4} -eq 1013 ] ; then 
