@@ -57,8 +57,11 @@ calcfet()
 				#78B3P50A		
 				FET=11 
 		elif [ ${PNR:4} -eq 2103 ] ; then
-				#72B4P50A		
-				FET=5 
+			if [ ${REV:2} -lt 1 ] ; then
+				FET=5
+			else
+				FET=3
+			fi
 		elif [ ${PNR:4} -eq 2113 ] ; then
 				#72A3P50A
 				FET=2
