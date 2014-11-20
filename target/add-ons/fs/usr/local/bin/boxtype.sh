@@ -20,6 +20,11 @@ proc_box_smb() {
 		MODEL_ID=SP2x
 		MODEL_NAME=SP20
 		RC=20
+	elif  [ "${PNR}" == "1501" ] ; then
+		#echo "SMB-${PNR} - SP2x/SP20"
+		MODEL_ID=SP2x
+		MODEL_NAME=SP20E
+		RC=20
 	elif  [ "${PNR}" == "5400" ] ; then
 		#echo "SMB-${PNR} - SP3x/SP30"
 		MODEL_ID=SP3x
