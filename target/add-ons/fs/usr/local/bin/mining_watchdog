@@ -34,18 +34,21 @@ reboot_miner_safe() {
 	kill $pid3
 	sync
 	sleep 3
+	logger "Doing reboot..."
+	spond-manager start
 	sync
         reboot
+	sleep 300
 }
 
 
 loop() {
 	sleep 180
 
-	if [ -f "/etc/mg_test_reboot" ] 
+	if [ -f "/tmp/mg_test_reboot" ] 
 	then
 		logger "testing reboot"
-		reboot
+		reboot_miner_safe
 	fi
 
 while true; do
@@ -75,16 +78,17 @@ while true; do
 				logger "Watchdog caught problem: soft handle"
 				echo "Watchdog caught problem: soft handle" >> /tmp/mg_event_log
 				spond-manager stop
-				sleep 10
+				sleep 15
 				spond-manager start
-				sleep 120
+				sleep 100
 				if [ ! -f $WATCHDOG_FILE ] 
 				then 
-					logger "Watchdog caught BIG problem: hard handle not"
-					reboot_miner_safe not till boot issue resolved
+					logger "Watchdog caught BIG problem: hard handle"
+					reboot_miner_safe 
+					#not till boot issue resolved
 				fi
-			else
-				logger "Do nothing WD disabled"
+			#else
+			#	logger "Do nothing WD disabled"
 			fi
 		fi
 	fi

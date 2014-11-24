@@ -104,6 +104,7 @@ start)
 	misc_start
 	led_init
 	MODEL_ID=`cat /model_id`
+	MODEL_NAME=`cat /model_name`
 	cd /usr/local/bin/
 	rm /usr/local/bin/miner_gate_arm
 	rm /usr/local/bin/mainvpd
@@ -111,10 +112,14 @@ start)
 	rm /etc/mg_custom_mode
 	if [ "${MODEL_ID}" == "SP3x" ] ; then 
 		ln -s /etc/bin/miner_gate_sp30 /usr/local/bin/miner_gate_arm
-		ln -s /etc/mg_custom_mode_sp30 /etc/mg_custom_mode
+		if [ "${MODEL_NAME}" == "SP35" ] ; then 
+			ln -s /etc/mg_custom_mode_sp35 /etc/mg_custom_mode
+		else
+			ln -s /etc/mg_custom_mode_sp30 /etc/mg_custom_mode
+		fi
 		ln -s /etc/mg_disabled_asics_sp30 /etc/mg_disabled_asics
 		ln -s /usr/local/bin/mainvpd_sp3x /usr/local/bin/mainvpd   
-	else
+	else # SP20
 		ln -s /etc/bin/miner_gate_sp20 /usr/local/bin/miner_gate_arm	
 		ln -s /etc/mg_custom_mode_sp20 /etc/mg_custom_mode
 		ln -s /etc/mg_disabled_asics_sp20 /etc/mg_disabled_asics

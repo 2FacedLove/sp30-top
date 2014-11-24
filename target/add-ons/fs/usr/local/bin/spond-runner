@@ -11,7 +11,7 @@ export PATH=$PATH:/usr/local/bin:/bin
 
 try_get_time() {
 	logger "try get time start"
-	#[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p pool.ntp.org`
+	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p pool.ntp.org`
 	[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p europe.pool.ntp.org`
 	logger "try get time done"
 }
