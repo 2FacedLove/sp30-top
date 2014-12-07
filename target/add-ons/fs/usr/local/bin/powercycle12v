@@ -56,6 +56,12 @@ PWR_ON ()
 {
 
     i2cset -y 0 0x70 ${PSU_ADDR}
+
+    i2cset -y 0 ${ADDR} 0x10 0x00
+    usleep 50000
+    i2cset -y 0 ${ADDR} 0x03
+    usleep 50000
+
     i2cset -y 0 ${ADDR} 0x01 ${ON_CMD} 
     sleep 2
 
@@ -74,6 +80,11 @@ PWR_OFF ()
 {
         i2cset -y 0 0x70 ${PSU_ADDR}
         i2cset -y 0 ${ADDR} 0x10 0x00 > /dev/null 2>&1
+
+        usleep 50000
+        i2cset -y 0 ${ADDR} 0x03
+        usleep 50000
+
         i2cset -y 0 ${ADDR} 0x01 ${OFF_CMD}
         sleep 2
 
