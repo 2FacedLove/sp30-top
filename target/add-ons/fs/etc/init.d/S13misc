@@ -110,11 +110,14 @@ start)
 	rm /usr/local/bin/mainvpd
 	rm /etc/mg_disabled_asics
 	rm /etc/mg_custom_mode
+	rm /etc/mg_minimal_rate
 	if [ "${MODEL_ID}" == "SP3x" ] ; then 
 		ln -s /etc/bin/miner_gate_sp30 /usr/local/bin/miner_gate_arm
 		if [ "${MODEL_NAME}" == "SP35" ] ; then 
+			ln -s /etc/mg_minimal_rate_sp35 /etc/mg_minimal_rate
 			ln -s /etc/mg_custom_mode_sp35 /etc/mg_custom_mode
 		else
+			ln -s /etc/mg_minimal_rate_sp3x /etc/mg_minimal_rate
 			ln -s /etc/mg_custom_mode_sp30 /etc/mg_custom_mode
 		fi
 		ln -s /etc/mg_disabled_asics_sp30 /etc/mg_disabled_asics
@@ -122,6 +125,7 @@ start)
 	else # SP20
 		ln -s /etc/bin/miner_gate_sp20 /usr/local/bin/miner_gate_arm	
 		ln -s /etc/mg_custom_mode_sp20 /etc/mg_custom_mode
+		ln -s /etc/mg_minimal_rate_sp20 /etc/mg_minimal_rate
 		ln -s /etc/mg_disabled_asics_sp20 /etc/mg_disabled_asics
 		ln -s /usr/local/bin/mainvpd_sp2x /usr/local/bin/mainvpd  
 	fi 

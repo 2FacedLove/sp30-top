@@ -43,6 +43,7 @@ start|"")
 		/etc/cron.d/RECORDHashrate    &
 	fi	
 	ln -s /mnt/config/log/messages /var/log/messages2
+	echo Hello > /tmp/boot_complete
 	logger "S98 done"
 	sync
 	;;
