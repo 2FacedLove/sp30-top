@@ -4,13 +4,14 @@ SPOND_REPOS_REF=https://github.com/Spondoolies-Tech
 PACKAGES_SUBDIR=packages
 GEN_TARGETS=get build
 
-PKG_LIST = $(patsubst ${PACKAGES_SUBDIR}/%/, %, $(dir $(wildcard ${PACKAGES_SUBDIR}/*/)))
+PKG_LIST = $(patsubst ${PACKAGES_SUBDIR}/%/, %, $(dir $(wildcard ${PACKAGES_SUBDIR}/*/Makefile)))
 
 image: do_deploy
 do_deploy: build deploy
 
 init:
-	for d in kernel $(filter-out kernel, ${PKG_LIST}); do make -C ${PACKAGES_SUBDIR}/$$d $@; done
+	set -e; for d in kernel $(filter-out kernel, ${PKG_LIST}); do make -C ${PACKAGES_SUBDIR}/$$d $@; done
+	@echo "init completed"
 
 deploy:
 	if [ -a ${HOME}/spond_next_ver ] ; then mv ${HOME}/spond_next_ver ${DEPLOY_DIR}/../add-ons/fs/fw_ver; else vi ${DEPLOY_DIR}/../add-ons/fs/fw_ver; fi
