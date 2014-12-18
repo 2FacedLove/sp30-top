@@ -1,3 +1,6 @@
+export WD=$(shell pwd)
+export PYTHONPATH=$(WD)/src/output/target/usr/lib/python2.7/site-packages
+
 get: 0001_adding_python_modules_for_flask_requests.patch
 	tar xf buildroot-2013.05.tar.xz
 	mv buildroot-2013.05 src
