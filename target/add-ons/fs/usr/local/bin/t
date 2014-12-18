@@ -1,4 +1,4 @@
 #!/bin/sh
 miner_gate_arm &
 sleep 10
-cgminer --text-only --config /etc/cgminer.conf 
+/usr/local/bin/cgminer --text-only --config /etc/cgminer.conf 

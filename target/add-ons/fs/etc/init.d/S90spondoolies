@@ -13,7 +13,13 @@ DAEMON=miner_starter_simple
 case "$1" in
 start)
 	logger "S90"
-	echo 2 > /tmp/blink_led
+	ip_count=`ifconfig | grep "inet addr" | grep -v 127.0.0.1 | wc -l`
+	if [ $ip_count -gt 0 ]; then
+		echo 2 > /tmp/blink_led
+	else
+		echo 3 > /tmp/blink_led	
+	fi
+		
 	sync
 	NORMALBOOT=1
 	#	mount /mnt/sd-boot

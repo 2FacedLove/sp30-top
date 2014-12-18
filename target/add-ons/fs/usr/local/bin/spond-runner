@@ -6,7 +6,7 @@
 
 #MINERGATE_CMD="nohup chrt -f 90 /usr/local/bin/miner_gate_arm > /dev/null 2>&1"
 MINERGATE_CMD="nohup /usr/local/bin/miner_gate_arm > /dev/null 2>&1"
-CGMINER_CMD="nohup /etc/bin/cgminer --text-only --config /etc/cgminer.conf"
+CGMINER_CMD="nohup /usr/local/bin/cgminer --text-only --config /etc/cgminer.conf"
 export PATH=$PATH:/usr/local/bin:/bin
 
 try_get_time() {
@@ -99,7 +99,12 @@ start)
 	start_mg
 	;;
 stop)
-	echo 2 > /tmp/blink_led
+	ip_count=`ifconfig | grep "inet addr" | grep -v 127.0.0.1 | wc -l`
+	if [ $ip_count -gt 0 ]; then
+		echo 2 > /tmp/blink_led
+	else
+		echo 3 > /tmp/blink_led	
+	fi
 	stop_mg
 	;;
 restart|reload)

@@ -111,6 +111,15 @@ start)
 	rm /etc/mg_disabled_asics
 	rm /etc/mg_custom_mode
 	rm /etc/mg_minimal_rate
+
+	FLAG1=`cat /etc/mg_flag_1`
+	rm /usr/local/bin/cgminer
+	if [ "${FLAG1}" == "666" ] ; then 
+		ln -s /usr/local/bin/cgminer-extranonce /usr/local/bin/cgminer	
+	else 
+		ln -s /etc/bin/cgminer /usr/local/bin/cgminer
+	fi
+
 	if [ "${MODEL_ID}" == "SP3x" ] ; then 
 		ln -s /etc/bin/miner_gate_sp30 /usr/local/bin/miner_gate_arm
 		if [ "${MODEL_NAME}" == "SP35" ] ; then 

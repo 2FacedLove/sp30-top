@@ -1,2 +1,2 @@
 #!/bin/sh
-cgminer --text-only --config /etc/cgminer.conf
+/usr/local/bin/cgminer --text-only --config /etc/cgminer.conf

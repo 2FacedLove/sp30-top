@@ -7,6 +7,7 @@ poll_eth_loop () {
 		eth_ip=`ifconfig eth0 | grep "inet addr" | grep -v 127.0.0.1 | wc -l`
 		if [ $eth_ip -lt 1 ]; then
 			logger "Requesting DHCP!"
+			echo 3 > /tmp/blink_led	
 			ifup eth0
 		fi
 		sleep 15;
