@@ -1,0 +1,237 @@
+diff -auNr buildroot-2013.05/package/Config.in src/package/Config.in
+--- buildroot-2013.05/package/Config.in	2013-05-31 23:29:04.000000000 +0300
++++ src/package/Config.in	2014-12-18 10:26:00.214323872 +0200
+@@ -331,17 +331,22 @@
+ menu "external python modules"
+ source "package/python-bottle/Config.in"
+ source "package/python-dpkt/Config.in"
++source "package/python-flask/Config.in"
+ source "package/python-id3/Config.in"
+ source "package/python-mad/Config.in"
+ source "package/python-meld3/Config.in"
++source "package/python-itsdangerous/Config.in"
++source "package/python-jinja2/Config.in"
+ source "package/python-netifaces/Config.in"
+ source "package/python-nfc/Config.in"
+ source "package/python-protobuf/Config.in"
+ source "package/python-pygame/Config.in"
+ source "package/python-pyparsing/Config.in"
++source "package/python-requests/Config.in"
+ source "package/python-serial/Config.in"
+ source "package/python-setuptools/Config.in"
+ source "package/python-thrift/Config.in"
++source "package/python-werkzeug/Config.in"
+ endmenu
+ endif
+ source "package/ruby/Config.in"
+diff -auNr buildroot-2013.05/package/python-flask/Config.in src/package/python-flask/Config.in
+--- buildroot-2013.05/package/python-flask/Config.in	1970-01-01 02:00:00.000000000 +0200
++++ src/package/python-flask/Config.in	2014-12-18 10:26:00.562323866 +0200
+@@ -0,0 +1,10 @@
++config BR2_PACKAGE_PYTHON_FLASK
++	bool "python-flask"
++	select BR2_PACKAGE_PYTHON_WERKZEUG
++	select BR2_PACKAGE_PYTHON_JINJA2
++	select BR2_PACKAGE_PYTHON_ITSDANGEROUS
++	help
++	  Flask is a microframework for Python based on Werkzeug,
++	  Jinja 2 and good intentions.
++
++	  http://flask.pocoo.org/
+diff -auNr buildroot-2013.05/package/python-flask/python-flask.hash src/package/python-flask/python-flask.hash
+--- buildroot-2013.05/package/python-flask/python-flask.hash	1970-01-01 02:00:00.000000000 +0200
++++ src/package/python-flask/python-flask.hash	2014-12-18 10:26:00.562323866 +0200
+@@ -0,0 +1,3 @@
++# md5 from https://pypi.python.org/pypi?:action=show_md5&digest=378670fe456957eb3c27ddaef60b2b24, sha256 locally computed
++md5	378670fe456957eb3c27ddaef60b2b24  Flask-0.10.1.tar.gz
++sha256	4c83829ff83d408b5e1d4995472265411d2c414112298f2eb4b359d9e4563373  Flask-0.10.1.tar.gz
+diff -auNr buildroot-2013.05/package/python-flask/python-flask.mk src/package/python-flask/python-flask.mk
+--- buildroot-2013.05/package/python-flask/python-flask.mk	1970-01-01 02:00:00.000000000 +0200
++++ src/package/python-flask/python-flask.mk	2014-12-18 10:26:00.562323866 +0200
+@@ -0,0 +1,21 @@
++################################################################################
++#
++# python-flask
++#
++################################################################################
++
++PYTHON_FLASK_VERSION = 0.10.1
++PYTHON_FLASK_SOURCE = Flask-$(PYTHON_FLASK_VERSION).tar.gz
++PYTHON_FLASK_SITE = http://pypi.python.org/packages/source/F/Flask
++
++PYTHON_FLASK_DEPENDENCIES = python python-setuptools python-werkzeug python-jinja2 python-itsdangerous
++
++define PYTHON_FLASK_BUILD_CMDS
++	(cd $(@D); $(HOST_DIR)/usr/bin/python setup.py build)
++endef
++
++define PYTHON_FLASK_INSTALL_TARGET_CMDS
++	(cd $(@D); $(HOST_DIR)/usr/bin/python setup.py install --prefix=$(TARGET_DIR)/usr)
++endef
++
++$(eval $(generic-package))
+diff -auNr buildroot-2013.05/package/python-itsdangerous/Config.in src/package/python-itsdangerous/Config.in
+--- buildroot-2013.05/package/python-itsdangerous/Config.in	1970-01-01 02:00:00.000000000 +0200
++++ src/package/python-itsdangerous/Config.in	2014-12-18 10:26:00.562323866 +0200
+@@ -0,0 +1,7 @@
++config BR2_PACKAGE_PYTHON_ITSDANGEROUS
++	bool "python-itsdangerous"
++	help
++	  Itsdangerous contains various helpers to pass data to
++	  untrusted environments and to get it back safe and sound.
++
++	  http://pythonhosted.org/itsdangerous/
+diff -auNr buildroot-2013.05/package/python-itsdangerous/python-itsdangerous.mk src/package/python-itsdangerous/python-itsdangerous.mk
+--- buildroot-2013.05/package/python-itsdangerous/python-itsdangerous.mk	1970-01-01 02:00:00.000000000 +0200
++++ src/package/python-itsdangerous/python-itsdangerous.mk	2014-12-18 10:26:00.562323866 +0200
+@@ -0,0 +1,20 @@
++################################################################################
++#
++# python-itsdangerous
++#
++################################################################################
++
++PYTHON_ITSDANGEROUS_VERSION = 0.24
++PYTHON_ITSDANGEROUS_SITE = $(call github,mitsuhiko,itsdangerous,$(PYTHON_ITSDANGEROUS_VERSION))
++
++PYTHON_ITSDANGEROUS_DEPENDENCIES = python
++
++define PYTHON_ITSDANGEROUS_BUILD_CMDS
++	(cd $(@D); $(HOST_DIR)/usr/bin/python setup.py build)
++endef
++
++define PYTHON_ITSDANGEROUS_INSTALL_TARGET_CMDS
++	(cd $(@D); $(HOST_DIR)/usr/bin/python setup.py install --prefix=$(TARGET_DIR)/usr)
++endef
++
++$(eval $(generic-package))
+diff -auNr buildroot-2013.05/package/python-jinja2/Config.in src/package/python-jinja2/Config.in
+--- buildroot-2013.05/package/python-jinja2/Config.in	1970-01-01 02:00:00.000000000 +0200
++++ src/package/python-jinja2/Config.in	2014-12-18 10:26:00.562323866 +0200
+@@ -0,0 +1,8 @@
++config BR2_PACKAGE_PYTHON_JINJA2
++	bool "python-jinja2"
++	help
++	  Jinja2 is a template engine written in pure Python. It
++	  provides a Django inspired non-XML syntax but supports
++	  inline expressions and an optional sandboxed environment.
++
++	  http://jinja.pocoo.org/
+diff -auNr buildroot-2013.05/package/python-jinja2/python-jinja2.hash src/package/python-jinja2/python-jinja2.hash
+--- buildroot-2013.05/package/python-jinja2/python-jinja2.hash	1970-01-01 02:00:00.000000000 +0200
++++ src/package/python-jinja2/python-jinja2.hash	2014-12-18 10:26:00.562323866 +0200
+@@ -0,0 +1,3 @@
++# md5 from https://pypi.python.org/pypi?:action=show_md5&digest=b9dffd2f3b43d673802fe857c8445b1a, sha256 locally computed
++md5	b9dffd2f3b43d673802fe857c8445b1a  Jinja2-2.7.3.tar.gz
++sha256	2e24ac5d004db5714976a04ac0e80c6df6e47e98c354cb2c0d82f8879d4f8fdb  Jinja2-2.7.3.tar.gz
+diff -auNr buildroot-2013.05/package/python-jinja2/python-jinja2.mk src/package/python-jinja2/python-jinja2.mk
+--- buildroot-2013.05/package/python-jinja2/python-jinja2.mk	1970-01-01 02:00:00.000000000 +0200
++++ src/package/python-jinja2/python-jinja2.mk	2014-12-18 10:26:00.562323866 +0200
+@@ -0,0 +1,21 @@
++################################################################################
++#
++# python-jinja2
++#
++################################################################################
++
++PYTHON_JINJA2_VERSION = 2.7.3
++PYTHON_JINJA2_SOURCE = Jinja2-$(PYTHON_JINJA2_VERSION).tar.gz
++PYTHON_JINJA2_SITE = http://pypi.python.org/packages/source/J/Jinja2
++
++PYTHON_JINJA2_DEPENDENCIES = python
++
++define PYTHON_JINJA2_BUILD_CMDS
++	(cd $(@D); $(HOST_DIR)/usr/bin/python setup.py build)
++endef
++
++define PYTHON_JINJA2_INSTALL_TARGET_CMDS
++	(cd $(@D); $(HOST_DIR)/usr/bin/python setup.py install --prefix=$(TARGET_DIR)/usr)
++endef
++
++$(eval $(generic-package))
+diff -auNr buildroot-2013.05/package/python-requests/Config.in src/package/python-requests/Config.in
+--- buildroot-2013.05/package/python-requests/Config.in	1970-01-01 02:00:00.000000000 +0200
++++ src/package/python-requests/Config.in	2014-12-18 10:26:00.566323865 +0200
+@@ -0,0 +1,7 @@
++config BR2_PACKAGE_PYTHON_REQUESTS
++	bool "python-requests"
++	help
++	  Requests is an Apache2 Licensed HTTP library, written in
++	  Python, for human beings.
++
++	  http://www.python-requests.org/
+diff -auNr buildroot-2013.05/package/python-requests/python-requests.hash src/package/python-requests/python-requests.hash
+--- buildroot-2013.05/package/python-requests/python-requests.hash	1970-01-01 02:00:00.000000000 +0200
++++ src/package/python-requests/python-requests.hash	2014-12-18 10:26:00.566323865 +0200
+@@ -0,0 +1,3 @@
++# md5 from https://pypi.python.org/pypi?:action=show_md5&digest=02214b3a179e445545de4b7a98d3dd17, sha256 locally computed
++md5	02214b3a179e445545de4b7a98d3dd17  requests-2.4.3.tar.gz
++sha256	53c68313c5c6149b1a899234c000296e60a8900682accf73d6f0c6d608afc6b1  requests-2.4.3.tar.gz
+diff -auNr buildroot-2013.05/package/python-requests/python-requests.mk src/package/python-requests/python-requests.mk
+--- buildroot-2013.05/package/python-requests/python-requests.mk	1970-01-01 02:00:00.000000000 +0200
++++ src/package/python-requests/python-requests.mk	2014-12-18 10:26:00.566323865 +0200
+@@ -0,0 +1,21 @@
++################################################################################
++#
++# python-requests
++#
++################################################################################
++
++PYTHON_REQUESTS_VERSION = 2.4.3
++PYTHON_REQUESTS_SOURCE = requests-$(PYTHON_REQUESTS_VERSION).tar.gz
++PYTHON_REQUESTS_SITE = http://pypi.python.org/packages/source/r/requests
++
++PYTHON_REQUESTS_DEPENDENCIES = python
++
++define PYTHON_REQUESTS_BUILD_CMDS
++	(cd $(@D); $(HOST_DIR)/usr/bin/python setup.py build)
++endef
++
++define PYTHON_REQUESTS_INSTALL_TARGET_CMDS
++	(cd $(@D); $(HOST_DIR)/usr/bin/python setup.py install --prefix=$(TARGET_DIR)/usr)
++endef
++
++$(eval $(generic-package))
+diff -auNr buildroot-2013.05/package/python-werkzeug/Config.in src/package/python-werkzeug/Config.in
+--- buildroot-2013.05/package/python-werkzeug/Config.in	1970-01-01 02:00:00.000000000 +0200
++++ src/package/python-werkzeug/Config.in	2014-12-18 10:26:00.566323865 +0200
+@@ -0,0 +1,7 @@
++config BR2_PACKAGE_PYTHON_WERKZEUG
++	bool "python-werkzeug"
++	help
++	  Werkzeug is a WSGI utility library for Python. It's widely
++	  used and BSD licensed.
++
++	  http://werkzeug.pocoo.org/
+diff -auNr buildroot-2013.05/package/python-werkzeug/python-werkzeug.hash src/package/python-werkzeug/python-werkzeug.hash
+--- buildroot-2013.05/package/python-werkzeug/python-werkzeug.hash	1970-01-01 02:00:00.000000000 +0200
++++ src/package/python-werkzeug/python-werkzeug.hash	2014-12-18 10:26:00.570323865 +0200
+@@ -0,0 +1,3 @@
++# md5 from https://pypi.python.org/pypi?:action=show_md5&digest=f7afcadc03b0f2267bdc156c34586043, sha256 locally computed
++md5	f7afcadc03b0f2267bdc156c34586043  Werkzeug-0.9.6.tar.gz
++sha256	7f11e7e2e73eb22677cac1b11113eb6106f66cedef13d140e83cf6563c90b79c  Werkzeug-0.9.6.tar.gz
+diff -auNr buildroot-2013.05/package/python-werkzeug/python-werkzeug.mk src/package/python-werkzeug/python-werkzeug.mk
+--- buildroot-2013.05/package/python-werkzeug/python-werkzeug.mk	1970-01-01 02:00:00.000000000 +0200
++++ src/package/python-werkzeug/python-werkzeug.mk	2014-12-18 10:26:00.570323865 +0200
+@@ -0,0 +1,21 @@
++################################################################################
++#
++# python-werkzeug
++#
++################################################################################
++
++PYTHON_WERKZEUG_VERSION = 0.9.6
++PYTHON_WERKZEUG_SOURCE = Werkzeug-$(PYTHON_WERKZEUG_VERSION).tar.gz
++PYTHON_WERKZEUG_SITE = http://pypi.python.org/packages/source/W/Werkzeug
++
++PYTHON_WERKZEUG_DEPENDENCIES = python
++
++define PYTHON_WERKZEUG_BUILD_CMDS
++	(cd $(@D); $(HOST_DIR)/usr/bin/python setup.py build)
++endef
++
++define PYTHON_WERKZEUG_INSTALL_TARGET_CMDS
++	(cd $(@D); $(HOST_DIR)/usr/bin/python setup.py install --prefix=$(TARGET_DIR)/usr)
++endef
++
++$(eval $(generic-package))
