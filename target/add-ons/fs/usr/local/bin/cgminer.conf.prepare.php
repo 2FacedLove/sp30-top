@@ -23,9 +23,10 @@ if (file_exists("/etc/cgminer.conf.template")) {
 	$hostname = str_replace("miner-","",$hostname);
 	$current  = file_get_contents("/etc/cgminer.conf", true);
 	$user  = file_get_contents("/etc/cgminer.conf.template", true);
-	$user = str_replace("%h",$hostname,$user);
-	$user = str_replace("%i",$ip,$user);
-	$user = str_replace("%v",trim(file_get_contents("/fw_ver")),$user);
+	$user = str_replace("%%h",$hostname,$user);
+	$user = str_replace("%%i",$ip,$user);
+	$user = str_replace("%%v",trim(file_get_contents("/fw_ver")),$user);
+	$user = str_replace("%%m",trim(file_get_contents("/model_name")),$user);
 	if (strcmp($user,$current)) {
 		$written = file_put_contents("/etc/cgminer.conf", $user);
 	} 
