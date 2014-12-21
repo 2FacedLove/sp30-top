@@ -23,9 +23,9 @@ miner_gate_arm_watchdog () {
 	$MINERGATE_CMD &
 	echo $! > /var/run/miner_gate_arm.pid
 	sleep 10
+	/usr/local/bin/cgminer.conf.prepare.php
 	$CGMINER_CMD &
 	echo $! > /var/run/cgminer_arm.pid
-
 	while true; do
 		pidm=`cat /var/run/miner_gate_arm.pid`
 		if [ ! -e /proc/$pidm -a /proc/$pidm/exe ]; then
@@ -40,6 +40,7 @@ miner_gate_arm_watchdog () {
 		pidc=`cat /var/run/cgminer_arm.pid`
 		if [ ! -e /proc/$pidc -a /proc/$pidc/exe ]; then
 			logger -s "Cgminer died and restarted"
+			/usr/local/bin/cgminer.conf.prepare.php
 			echo "Cgminer died and restarted" >> /tmp/mg_event_log
 			$CGMINER_CMD &
 			echo $! > /var/run/cgminer_arm.pid

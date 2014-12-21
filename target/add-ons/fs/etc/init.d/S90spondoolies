@@ -49,6 +49,10 @@ start)
 		echo $! > /var/run/ifup-requester.pid
 		/usr/local/bin/mining_watchdog start
 	fi
+
+	# create cgminer from template
+	/usr/local/bin/cgminer.conf.prepare.php
+
 	logger "S90 done"
 	sync
 	;;

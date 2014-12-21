@@ -113,8 +113,10 @@ start)
 	rm /etc/mg_minimal_rate
 
 	FLAG1=`cat /etc/mg_flag_1`
+	# use PHP for "bitwise and"
+	USECGMINER48=`php -r "echo ${FLAG1} & 2;`
 	rm /usr/local/bin/cgminer
-	if [ "${FLAG1}" == "666" ] ; then 
+	if [ "${USECGMINER48}" == "2" ] ; then 
 		ln -s /usr/local/bin/cgminer-extranonce /usr/local/bin/cgminer	
 	else 
 		ln -s /etc/bin/cgminer /usr/local/bin/cgminer
