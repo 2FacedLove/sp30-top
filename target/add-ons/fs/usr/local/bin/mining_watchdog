@@ -7,37 +7,29 @@ MAX_NVM_LOG_SIZE=5000
 
 reboot_miner_safe() {
 	logger reboot_miner_safe
-	kill `pidof watchdog`
 	echo "Reboot from mining WD" >> /tmp/mg_event_log
-	watchdog -T 15 -t 30 /dev/watchdog0
-	NVM_LOG_SIZE=$(du -a "$NVM_LOG" | cut -f 1)
-	if [ $NVM_LOG_SIZE -ge $MAX_NVM_LOG_SIZE ]; then
-		echo "removing huge log file"
-		rm $NVM_LOG
-	fi
-
-	echo "-----------------------" >> $NVM_LOG
-	echo -e "Not mining, reboot!" >> $NVM_LOG
-	echo "-----------------------" >> $NVM_LOG
-	echo `date` >> $NVM_LOG
-	echo "-----------------------" >> $NVM_LOG
-	ps -l >> $NVM_LOG
-	echo "-----------------------" >> $NVM_LOG
-	cat /proc/meminfo >> $NVM_LOG
-	echo "-----------------------" >> $NVM_LOG
-	cat /var/log/asics >> $NVM_LOG
-	echo "-----------------------" >> $NVM_LOG
-	pid1=`cat /var/run/miner_gate_arm_watchdog.pid`
-	pid3=`cat /var/run/miner_gate_arm.pid`
-	kill $pid3
-	sleep 1
-	kill $pid3
-	sync
-	sleep 3
+	pkill watchdog
 	logger "Doing reboot..."
-	spond-manager start
 	sync
-        reboot
+	sleep 1
+	watchdog -T 1 -t 30 /dev/watchdog0 -F
+#	NVM_LOG_SIZE=$(du -a "$NVM_LOG" | cut -f 1)
+#	if [ $NVM_LOG_SIZE -ge $MAX_NVM_LOG_SIZE ]; then
+#		echo "removing huge log file"
+#		rm $NVM_LOG
+#	fi
+#
+#	echo "-----------------------" >> $NVM_LOG
+#	echo -e "Not mining, reboot!" >> $NVM_LOG
+#	echo "-----------------------" >> $NVM_LOG
+#	echo `date` >> $NVM_LOG
+#	echo "-----------------------" >> $NVM_LOG
+#	ps -l >> $NVM_LOG
+#	echo "-----------------------" >> $NVM_LOG
+#	cat /proc/meminfo >> $NVM_LOG
+#	echo "-----------------------" >> $NVM_LOG
+#	cat /var/log/asics >> $NVM_LOG
+#	echo "-----------------------" >> $NVM_LOG
 	sleep 300
 }
 
@@ -56,7 +48,7 @@ while true; do
 	# test free memory
 	FREE_MEM=`awk '/MemFree/ {printf( "%.2d\n", $2 / 1024 )}' /proc/meminfo`
 	logger "free-memory:$FREE_MEM"
-	if [ $FREE_MEM -lt 100 ]
+	if [ $FREE_MEM -lt 300 ]
 	then
 		logger "Too little memory"
 		reboot_miner_safe 
