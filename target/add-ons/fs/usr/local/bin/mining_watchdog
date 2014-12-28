@@ -48,7 +48,7 @@ while true; do
 	# test free memory
 	FREE_MEM=`awk '/MemFree/ {printf( "%.2d\n", $2 / 1024 )}' /proc/meminfo`
 	logger "free-memory:$FREE_MEM"
-	if [ $FREE_MEM -lt 300 ]
+	if [ $FREE_MEM -lt 350 ]
 	then
 		logger "Too little memory"
 		reboot_miner_safe 

@@ -2,3 +2,4 @@
 #
 # this is not a service, just a place to run anything that needs to happen on startup
 #
+logger $0

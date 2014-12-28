@@ -34,7 +34,7 @@ set_normal_boot() {
 }
 
 set_normal_boot
-
+logger $0
 case "$1" in
   start)
 	if [ ${NORMALBOOT} -eq 1 ]; then

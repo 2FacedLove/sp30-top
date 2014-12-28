@@ -6,7 +6,7 @@
 
 . /etc/common-defs
 
-
+logger $0
 mount_nfs()
 {
 	if [ -f ${ROOTPATH_FILE} ]; then

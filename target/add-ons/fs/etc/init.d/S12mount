@@ -75,6 +75,7 @@ unmount_media()
 	:
 }
 
+logger $0
 
 case "$1" in
 start)

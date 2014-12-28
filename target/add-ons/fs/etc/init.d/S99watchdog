@@ -19,7 +19,7 @@ stop_watchdog()
 	watchdog -T 30 -t 140 /dev/watchdog0
 }
 
-
+logger $0
 case "$1" in
 start)
 	echo "Configure watchdog ..."

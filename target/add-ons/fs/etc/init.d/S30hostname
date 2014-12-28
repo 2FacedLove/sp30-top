@@ -2,7 +2,7 @@
 #
 # Handle SPI.
 #
-
+logger $0
 export PATH=$PATH:/usr/local/bin:/bin
 case "$1" in
 start)

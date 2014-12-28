@@ -90,11 +90,10 @@ if [ `echo ${PATH} | grep -c /usr/local/bin` -eq 0 ] ; then
         export PATH=$PATH:/usr/local/bin/
 fi
 
+logger $0
 
 case "$1" in
 start)
-	
-	logger "S13"
 	setboxtype	
 	echo 4 > /tmp/blink_led
 	sync

@@ -9,7 +9,7 @@
 export PATH=$PATH:/usr/local/bin
 
 DAEMON=miner_starter_simple
-
+logger $0
 case "$1" in
 start)
 	logger "S90"

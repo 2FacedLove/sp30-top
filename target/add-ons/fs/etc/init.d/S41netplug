@@ -15,6 +15,8 @@ netplug_stop()
 	pkill netplugd
 }
 
+logger $0
+
 case "$1" in
 start)
 	logger "S41"

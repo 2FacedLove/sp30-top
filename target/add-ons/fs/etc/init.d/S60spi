@@ -10,7 +10,7 @@ start_spi()
 	cd /sys/devices/bone_capemgr.*
 	echo BB-SPI0 > slots
 }
-
+logger $0
 case "$1" in
 start)
 	logger "S60"

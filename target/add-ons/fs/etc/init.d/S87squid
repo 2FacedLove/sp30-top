@@ -7,7 +7,7 @@ export PATH=$PATH:/usr/local/bin:/bin
 
 
 
-
+logger $0
 load_fpga() {
 	echo 22 > /sys/class/gpio/export
 	echo out > /sys/class/gpio/gpio22/direction
