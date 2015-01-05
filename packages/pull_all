@@ -1,8 +1,6 @@
 #!/bin/bash
 WD=`pwd`
 git pull
-cd $WD/kernel/src/
-git pull
 cd $WD/cgminer/src/
 git pull
 cd $WD/minepeon/src/
@@ -11,6 +9,3 @@ cd $WD/u-boot/src/
 git pull
 cd $WD/spilib/src/
 git pull
-cd $WD/cryptodev/src/
-git pull
-

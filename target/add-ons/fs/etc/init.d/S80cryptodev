@@ -6,7 +6,7 @@
 
 cryptodev_start()
 {
-	insmod /lib/modules/cryptodev.ko
+	modprobe cryptodev
 }
 
 logger $0

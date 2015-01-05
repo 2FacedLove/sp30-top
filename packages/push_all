@@ -15,11 +15,6 @@ git commit -a -m "$COMMENT"
 git tag -a "$TAG" -m "$COMMENT"
 git push
 
-cd $WD/kernel/src/
-git commit -a -m "$COMMENT"
-git tag -a "$TAG" -m "$COMMENT"
-git push
-
 cd $WD/minepeon/src/
 git commit -a -m "$COMMENT"
 git tag -a "$TAG" -m "$COMMENT"
@@ -34,5 +29,3 @@ cd $WD/spilib/src/
 git commit -a -m "$COMMENT"
 git tag -a "$TAG" -m "$COMMENT"
 git push
-
-

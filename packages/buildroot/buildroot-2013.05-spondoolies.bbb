@@ -241,18 +241,14 @@ BR2_PACKAGE_BUSYBOX_CONFIG="../busybox-1.20.2-config-embedded"
 # BR2_PACKAGE_LMBENCH is not set
 # BR2_PACKAGE_LTP_TESTSUITE is not set
 
-#
-# lttng-modules requires a linux kernel to be built
-#
+# BR2_PACKAGE_LTTNG_MODULES is not set
 # BR2_PACKAGE_LTTNG_TOOLS is not set
 # BR2_PACKAGE_LTRACE is not set
 # BR2_PACKAGE_MEMSTAT is not set
 # BR2_PACKAGE_NETPERF is not set
 # BR2_PACKAGE_OPROFILE is not set
 
-#
-# perf only available if Linux kernel is enabled, and requires largefile support
-#
+# BR2_PACKAGE_PERF is not set
 # BR2_PACKAGE_RAMSPEED is not set
 # BR2_PACKAGE_RT_TESTS is not set
 # BR2_PACKAGE_STRACE is not set
@@ -305,6 +301,7 @@ BR2_PACKAGE_BUSYBOX_CONFIG="../busybox-1.20.2-config-embedded"
 # BR2_PACKAGE_FBV is not set
 # BR2_PACKAGE_FB_TEST_APP is not set
 # BR2_PACKAGE_IMAGEMAGICK is not set
+# BR2_PACKAGE_LINUX_FUSION is not set
 # BR2_PACKAGE_SDL is not set
 
 #
@@ -415,10 +412,6 @@ BR2_PACKAGE_XFSPROGS=y
 # BR2_PACKAGE_OFONO is not set
 # BR2_PACKAGE_OPEN2300 is not set
 # BR2_PACKAGE_OPENOCD is not set
-
-#
-# owl-linux requires a Linux kernel
-#
 
 #
 # owl-linux is only supported on ARM9 architecture with EABI
@@ -613,6 +606,9 @@ BR2_PACKAGE_ZLIB=y
 # Crypto
 #
 # BR2_PACKAGE_BEECRYPT is not set
+BR2_PACKAGE_CRYPTODEV=y
+BR2_PACKAGE_CRYPTODEV_LINUX=y
+# BR2_PACKAGE_OCF_LINUX is not set
 # BR2_PACKAGE_GNUTLS is not set
 # BR2_PACKAGE_LIBGCRYPT is not set
 # BR2_PACKAGE_LIBGPG_ERROR is not set
@@ -623,7 +619,7 @@ BR2_PACKAGE_ZLIB=y
 # BR2_PACKAGE_NETTLE is not set
 BR2_PACKAGE_OPENSSL=y
 BR2_PACKAGE_OPENSSL_BIN=y
-# BR2_PACKAGE_OPENSSL_ENGINES is not set
+BR2_PACKAGE_OPENSSL_ENGINES=y
 # BR2_PACKAGE_POLARSSL is not set
 
 #
@@ -685,9 +681,7 @@ BR2_PACKAGE_OPENSSL_BIN=y
 #
 # BR2_PACKAGE_CCID is not set
 
-#
-# imx-lib needs an imx-specific kernel to be built
-#
+# BR2_PACKAGE_IMX_LIB is not set
 # BR2_PACKAGE_LCDAPI is not set
 # BR2_PACKAGE_LIBAIO is not set
 
@@ -734,9 +728,7 @@ BR2_PACKAGE_OPENSSL_BIN=y
 # BR2_PACKAGE_LIBFSLCODEC is not set
 # BR2_PACKAGE_LIBFSLPARSER is not set
 
-#
-# libfslvpuwrap needs an imx-specific kernel to be built
-#
+# BR2_PACKAGE_LIBFSLVPUWRAP is not set
 # BR2_PACKAGE_LIBMATROSKA is not set
 # BR2_PACKAGE_LIBMMS is not set
 # BR2_PACKAGE_LIBMPEG2 is not set
@@ -932,6 +924,7 @@ BR2_PACKAGE_DROPBEAR_SMALL=y
 # BR2_PACKAGE_HOSTAPD is not set
 # BR2_PACKAGE_HTTPING is not set
 # BR2_PACKAGE_IFTOP is not set
+# BR2_PACKAGE_IGH_ETHERCAT is not set
 # BR2_PACKAGE_INADYN is not set
 # BR2_PACKAGE_IPERF is not set
 # BR2_PACKAGE_IPROUTE2 is not set
@@ -1119,9 +1112,7 @@ BR2_TARGET_ROOTFS_CPIO_NONE=y
 # BR2_TARGET_ROOTFS_CRAMFS is not set
 # BR2_TARGET_ROOTFS_EXT2 is not set
 
-#
-# initramfs requires a Linux kernel to be built
-#
+# BR2_TARGET_ROOTFS_INITRAMFS is not set
 # BR2_TARGET_ROOTFS_JFFS2 is not set
 # BR2_TARGET_ROOTFS_ROMFS is not set
 # BR2_TARGET_ROOTFS_SQUASHFS is not set
@@ -1146,7 +1137,34 @@ BR2_TARGET_ROOTFS_TAR_OPTIONS=""
 #
 # Kernel
 #
-# BR2_LINUX_KERNEL is not set
+BR2_LINUX_KERNEL=y
+# BR2_LINUX_KERNEL_LATEST_VERSION is not set
+# BR2_LINUX_KERNEL_CUSTOM_VERSION is not set
+# BR2_LINUX_KERNEL_CUSTOM_TARBALL is not set
+BR2_LINUX_KERNEL_CUSTOM_GIT=y
+BR2_LINUX_KERNEL_CUSTOM_GIT_REPO_URL="https://github.com/Spondoolies-Tech/kernel.git"
+BR2_LINUX_KERNEL_CUSTOM_GIT_VERSION="HEAD"
+BR2_LINUX_KERNEL_VERSION="HEAD"
+BR2_LINUX_KERNEL_PATCH=""
+# BR2_LINUX_KERNEL_USE_DEFCONFIG is not set
+BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG=y
+BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="spond-kernel-config"
+BR2_LINUX_KERNEL_UBOOT_IMAGE=y
+BR2_LINUX_KERNEL_UIMAGE=y
+# BR2_LINUX_KERNEL_APPENDED_UIMAGE is not set
+# BR2_LINUX_KERNEL_ZIMAGE is not set
+# BR2_LINUX_KERNEL_APPENDED_ZIMAGE is not set
+# BR2_LINUX_KERNEL_VMLINUX is not set
+# BR2_LINUX_KERNEL_IMAGE_TARGET_CUSTOM is not set
+BR2_LINUX_KERNEL_UIMAGE_LOADADDR=""
+# BR2_LINUX_KERNEL_DTS_SUPPORT is not set
+# BR2_LINUX_KERNEL_INSTALL_TARGET is not set
+
+#
+# Linux Kernel Extensions
+#
+# BR2_LINUX_KERNEL_EXT_XENOMAI is not set
+# BR2_LINUX_KERNEL_EXT_RTAI is not set
 
 #
 # Legacy config options

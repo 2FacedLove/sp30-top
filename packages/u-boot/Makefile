@@ -1,13 +1,19 @@
-OPTS = ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi-
+export ARCH=arm
+export CROSS_COMPILE=arm-none-linux-gnueabi-
 
-get:
+default: build
+
+src:
 	git clone ${SPOND_REPOS_REF}/u-boot.git src
 
+get: src
+	cd src; git pull
+
 init:
-	make -C src ${OPTS} distclean
-	make -C src ${OPTS} am335x_evm_config
+	cd src; make distclean
+	cd src; make am335x_evm_config
 
 build:
-	make -C src ${OPTS}
+	cd src; make -j8
 
 deploy:

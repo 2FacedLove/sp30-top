@@ -165,11 +165,6 @@ rrd()
 	xzcat ${CUR_DIR}/../rrd/php-rrd.tar.xz | tar -xf -
 }
 
-cryptodev()
-{
-	cp -a ${CUR_DIR}/../../cryptodev/src/cryptodev.ko lib/modules
-}
-
 ipstate()
 {
 	cp -a ${CUR_DIR}/../../ipaddr_state/src/ipaddr_state usr/local/bin
@@ -193,7 +188,6 @@ main()
 	#sw_upgrade
 	cron
 	rrd
-	cryptodev
 	ipstate
 }
 
