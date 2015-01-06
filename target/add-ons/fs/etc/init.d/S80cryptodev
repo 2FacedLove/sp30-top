@@ -9,7 +9,7 @@ cryptodev_start()
 	modprobe cryptodev
 }
 
-logger $0
+logger $0 $1 $2
 case "$1" in
 start)
 	logger "S80"

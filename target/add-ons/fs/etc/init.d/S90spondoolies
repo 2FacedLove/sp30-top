@@ -9,7 +9,7 @@
 export PATH=$PATH:/usr/local/bin
 
 DAEMON=miner_starter_simple
-logger $0
+logger $0 $1 $2
 case "$1" in
 start)
 	logger "S90"
@@ -65,7 +65,8 @@ stop)
 		rm /var/run/ifup-requester.pid
 		kill -9 $pid1
 	fi
-	sleep 3
+	/usr/local/bin/spond-runner stop
+	sleep 4
 	;;
 restart|reload)
 	$0 stop

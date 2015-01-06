@@ -15,7 +15,7 @@ netplug_stop()
 	pkill netplugd
 }
 
-logger $0
+logger $0 $1 $2
 
 case "$1" in
 start)

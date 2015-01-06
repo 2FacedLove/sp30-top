@@ -34,14 +34,14 @@ set_normal_boot() {
 }
 
 set_normal_boot
-logger $0
+logger $0 $1 $2
 case "$1" in
   start)
 	if [ ${NORMALBOOT} -eq 1 ]; then
-		logger "S50"
+		logger "S50 A"
 		sync
 		start
-		logger "S50 done"
+		logger "S50 A done"
 		sync
 	else
 		logger "NORMALBOOT=${NORMALBOOT} SKIPPING S50"

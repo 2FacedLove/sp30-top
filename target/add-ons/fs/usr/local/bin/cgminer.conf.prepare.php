@@ -20,13 +20,21 @@ function get_local_ipv4() {
 if (file_exists("/etc/cgminer.conf.template")) {
 	$ip = get_local_ipv4();
 	$hostname = trim(exec("hostname"));
+	$ipfixed_array = explode ("." , $ip);
+	$ipfixed = $ipfixed_array[2]."x".$ipfixed_array[3];
+	$ver = trim(file_get_contents("/fw_ver"));
+	$fixed_ver = str_replace (".", "x" ,  $ver);
 	$hostname = str_replace("miner-","",$hostname);
 	$current  = file_get_contents("/etc/cgminer.conf", true);
 	$user  = file_get_contents("/etc/cgminer.conf.template", true);
-	$user = str_replace("%%h",$hostname,$user);
-	$user = str_replace("%%i",$ip,$user);
-	$user = str_replace("%%v",trim(file_get_contents("/fw_ver")),$user);
-	$user = str_replace("%%m",trim(file_get_contents("/model_name")),$user);
+
+	$user = str_replace("%%","%",$user);
+	$user = str_replace("%h",$hostname,$user);
+	$user = str_replace("%i",$ip,$user);
+	$user = str_replace("%j",$ipfixed,$user);
+	$user = str_replace("%v",$ver,$user);
+	$user = str_replace("%w",$fixed_ver,$user);
+	$user = str_replace("%m",trim(file_get_contents("/model_name")),$user);
 	if (strcmp($user,$current)) {
 		$written = file_put_contents("/etc/cgminer.conf", $user);
 	} 
