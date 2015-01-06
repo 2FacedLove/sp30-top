@@ -78,7 +78,7 @@ stop_mg() {
 			kill $pid1
 			kill $pid2
 			kill $pid3
-			sleep 3
+			sleep 4
 			kill -9 $pid1
 			kill -9 $pid2
 			kill -9 $pid3
@@ -110,7 +110,7 @@ stop)
 	;;
 restart|reload)
 	"$0" stop
-	sleep 3
+	sleep 5
 	"$0" start
 	;;
 status)

@@ -10,7 +10,7 @@ start_hotplug()
 	echo "${HOTPLUG}" > /proc/sys/kernel/hotplug
 }
 
-logger $0
+logger $0 $1 $2
 case "$1" in
 start)
 	echo 5 > /tmp/blink_led

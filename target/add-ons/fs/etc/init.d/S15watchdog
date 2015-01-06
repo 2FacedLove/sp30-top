@@ -15,7 +15,7 @@ stop_watchdog()
 {
 	pkill watchdog
 }
-logger $0
+logger $0 $1 $2
 
 case "$1" in
 start)

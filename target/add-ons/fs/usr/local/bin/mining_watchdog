@@ -12,7 +12,8 @@ reboot_miner_safe() {
 	logger "Doing reboot..."
 	sync
 	sleep 1
-	watchdog -T 1 -t 30 /dev/watchdog0 -F
+	reboot
+#	watchdog -T 30 -t 50 /dev/watchdog0 -F
 #	NVM_LOG_SIZE=$(du -a "$NVM_LOG" | cut -f 1)
 #	if [ $NVM_LOG_SIZE -ge $MAX_NVM_LOG_SIZE ]; then
 #		echo "removing huge log file"
