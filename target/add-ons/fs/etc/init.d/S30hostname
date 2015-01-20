@@ -14,7 +14,11 @@ start)
 	echo 6 > /tmp/blink_led
 	sync
 	echo "Setting hostname..."
-	/bin/hostname `eeprom-read-hostname.sh`
+	if [ -s /etc/mg_hostname ] ; then
+		/bin/hostname `cat /etc/mg_hostname`
+	else
+		/bin/hostname `eeprom-read-hostname.sh`
+	fi
 	logger "S30 done"
 	sync
 	;;
