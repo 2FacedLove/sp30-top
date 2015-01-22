@@ -89,6 +89,7 @@ stop_mg() {
 			rm /var/run/cgminer_arm.pid
 			sleep 1
 			rm /var/run/spond-manager.running
+			echo 0 > /sys/devices/ocp.3/pwm_test_P9_31.12/duty
 		fi
 }
 
