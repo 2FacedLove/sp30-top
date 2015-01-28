@@ -19,6 +19,8 @@ start)
 	else
 		/bin/hostname `eeprom-read-hostname.sh`
 	fi
+	/usr/local/bin/genhwtag
+	echo "# done "> /usr/local/bin/genhwtag
 	logger "S30 done"
 	sync
 	;;

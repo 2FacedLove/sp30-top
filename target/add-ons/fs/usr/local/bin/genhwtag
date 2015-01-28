@@ -1,0 +1,20 @@
+#!/bin/sh
+BOXV=`readboxvpd.sh`
+if [ $? -ne 0 ] ; then
+        BOXV="N/A"
+fi
+
+TOPV=`mainvpd -top -q -a`
+if [ $? -ne 0 ] ; then
+        TOPV="N/A"
+fi
+
+BOTV=`mainvpd -bottom -q -a`
+if [ $? -ne 0 ] ; then
+        BOTV="N/A"
+fi
+
+SERIALS="M:${BOXV},T:${TOPV},B:${BOTV}"
+logger -s -t HWTAG ${SERIALS}
+echo ${SERIALS} > /tmp/hwtag
+
