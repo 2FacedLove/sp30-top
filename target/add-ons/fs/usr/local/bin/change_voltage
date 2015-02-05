@@ -1,0 +1,25 @@
+#!/bin/sh
+
+m=$1
+s=$(( $m - 5 ))
+MODEL_ID=`cat /model_id`                                     
+
+if [ "$#" -ne 1 ]; then
+    echo "Set ASIC max voltage and start mining. Set voltage 0 to stop mining."
+    echo "USAGE: $0 <max voltage milli>"
+else 
+
+	echo "Setting top voltage to $m, start voltage to $s"
+
+	if [ "$m" == 0 ]; then
+		/usr/local/bin/spond-manager stop
+		echo 0 > /sys/devices/ocp.3/pwm_test_P9_31.12/duty
+	else
+		if [ "${MODEL_ID}" == "SP2x" ] ; then 
+			sed -i "s/\(\s\S*\)\{5\}/ VS0:$s VS1:$s VS2:$s VS3:$s VMAX:$m/" /etc/mg_custom_mode
+		else
+			sed -i "s/\(\s\S*\)\{3\}/ VST:$s VSB:$s VMAX:$m/" /etc/mg_custom_mode
+		fi
+		/usr/local/bin/spond-manager restart                                      
+	fi 
+fi
