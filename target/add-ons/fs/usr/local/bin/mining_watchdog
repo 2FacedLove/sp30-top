@@ -72,6 +72,10 @@ while true; do
 				echo "Watchdog caught problem: soft handle" >> /tmp/mg_event_log
 				spond-manager stop
 				sleep 15
+				reset_i2c.sh
+				sleep 1
+				powercycle12v both
+				sleep 1
 				spond-manager start
 				sleep 100
 				if [ ! -f $WATCHDOG_FILE ] 
