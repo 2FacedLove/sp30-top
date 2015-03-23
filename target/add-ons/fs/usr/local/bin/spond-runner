@@ -19,7 +19,7 @@ try_get_time() {
 
 miner_gate_arm_watchdog () {
 	try_get_time
-	/usr/local/bin/prepare-fet.sh
+	#/usr/local/bin/prepare-fet.sh
 	$MINERGATE_CMD &
 	echo $! > /var/run/miner_gate_arm.pid
 	sleep 10
@@ -32,7 +32,7 @@ miner_gate_arm_watchdog () {
 			pkill cgminer
 			logger -s "Minergate died and restarted"
 			echo "Minergate died and restarted" >> /tmp/mg_event_log
-			/usr/local/bin/prepare-fet.sh
+			#/usr/local/bin/prepare-fet.sh
 			$MINERGATE_CMD &
 			echo $! > /var/run/miner_gate_arm.pid
 		fi

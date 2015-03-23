@@ -57,10 +57,38 @@ mount_partitions()
 
 mount_unionfs()
 {
-	# grep "${MP_MMC_CONF}" /proc/mounts &&
-	mount unionfs ||
-		echo 'UnionFS is NOT mounted!'
+	mount unionfs > /dev/null 2>&1
+	rc=$?
+	if [ $rc -ne 0 ]
+	then
+        	logger "ERROR mounting unionFS - will retry to fix"
+	        if [ -d /mnt/config ]
+        	then
+                	if [ -d /mnt/config/etc ]
+	                then
+        	                logger "folder /mnt/config/etc exist - let's remove and retry"
+                	        rm -rf /mnt/config/etc
+                        	mkdir /mnt/config/etc
+	                        chmod 755 /mnt/config/etc
+        	        else
+                	        mkdir /mnt/config/etc
+                        	chmod 755 /mnt/config/etc
+	                fi
+        	        mount unionfs > /dev/null 2>&1
+                	rc2=$?
+	                if  [ $rc2 -ne 0 ]
+        	        then
+                        	logger " FAILED TO REMOUNT unionFS even after /mnt/config/etc fix"
+	                else
+                	        logger "fixed /mnt/config/etc/ and mounted unionFS well!"
+	                fi
+	        else
+        	        logger "NO /mnt/config ... wtf??!"
+	        fi
+	fi
+
 }
+
 
 mount_media()
 {

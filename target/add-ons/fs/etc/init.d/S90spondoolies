@@ -28,7 +28,7 @@ start)
 	#[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p pool.ntp.org`
 	#[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p de.pool.ntp.org`
 	#[ `date +"%Y"` -le 2010 ] && `ntpd -qdn -p europe.pool.ntp.org`
-	/usr/local/bin/prepare-fet.sh
+#	/usr/local/bin/prepare-fet.sh
 	if [ -e "/mnt/mmc-config/autorun" ]; then
 		NORMALBOOT=0
 		/mnt/mmc-config/autorun
